@@ -1,13 +1,12 @@
 package gogobike.egg.com.gogobike;
 
 import android.Manifest;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
-import android.widget.Toast;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -15,18 +14,17 @@ import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.android.gms.maps.model.Polyline;
 import com.google.android.gms.maps.model.PolylineOptions;
 
-import java.net.MalformedURLException;
-import java.net.URL;
+import java.util.ArrayList;
+import java.util.List;
 
 import gogobike.egg.com.entity.BikeRoute;
-import gogobike.egg.com.service.Directions;
-import gogobike.egg.com.service.DownloadDirectionsTask;
 import gogobike.egg.com.util.PermissionUtils;
 
 
-public class MapActivity extends AppCompatActivity implements OnMapReadyCallback, DownloadDirectionsTask.BikeRouteListener {
+public class MapActivity extends AppCompatActivity implements OnMapReadyCallback {
 
     public static final String SERIALIZABLE_BIKE_ROUTE_DATA = "SERIALIZABLE_BIKE_ROUTE_DATA";
     private static final int LOCATION_PERMISSION_REQUEST_CODE = 1;
@@ -47,12 +45,20 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
 
         initGoogleMapApiKey();
         initMapFragment();
-
-        requestBikeRoute();
     }
 
     private void getExtras() {
-        bikeRoute = (BikeRoute) getIntent().getSerializableExtra(SERIALIZABLE_BIKE_ROUTE_DATA);
+        Intent intent = getIntent();
+        if(intent == null){
+            return;
+        }
+
+        Bundle bundle = intent.getExtras();
+        if(bundle == null){
+            return;
+        }
+
+        bikeRoute = (BikeRoute) bundle.getSerializable(SERIALIZABLE_BIKE_ROUTE_DATA);
     }
 
     private void initGoogleMapApiKey() {
@@ -80,7 +86,7 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
         map = googleMap;
 
         updateMyLocation();
-
+        updateMap(bikeRoute);
 
     }
 
@@ -109,57 +115,57 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
     }
 
 
-    private void enableMyLocation(){
+    private void enableMyLocation() {
         //noinspection MissingPermission
         map.setMyLocationEnabled(true);
 
     }
 
-    private void requestBikeRoute(){
-        if(bikeRoute == null){
+    public void updateMap(BikeRoute bikeRoute) {
+        if (bikeRoute == null) {
             return;
         }
 
-        String toUrl = urlRequest + "origin=" + bikeRoute.getOrigin() + "&"
-                + "destination=" + bikeRoute.getDestination() + "&"
-                + "avoid=ferries" + "&"
-                + "key=" + SERVER_KEY;
+        int routeSize = bikeRoute.getLatitudeList().size();
+        List<Double> latitudeList = bikeRoute.getLatitudeList();
+        List<Double> longitudeList = bikeRoute.getLongitudeList();
 
-        Log.e("googlemap", "url : " + toUrl);
-        try {
-            URL url = new URL(toUrl);
-            // start task
-            new DownloadDirectionsTask(this, MapActivity.this).execute(url);
-        } catch (MalformedURLException e) {
-            e.printStackTrace();
-        }
-    }
+        LatLng startPoint = new LatLng(latitudeList.get(0), longitudeList.get(0));
+        LatLng endPoint = new LatLng(latitudeList.get(routeSize - 1), longitudeList.get(routeSize - 1));
 
-    public void updateMap(String start, String end, Directions directions)
-    {
-        if (directions.directions.size() == 0)
-            return;
-        // very first and last latlng in array contains starting and ending point
-        int size = directions.latLngs.size();
-        LatLng startPoint = directions.latLngs.get(0);
-        LatLng endPoint = directions.latLngs.get(size-1);
         // add start and end marker
-        map.addMarker(new MarkerOptions().position(startPoint).title(start));
-        map.addMarker(new MarkerOptions().position(endPoint).title(end));
+        map.addMarker(new MarkerOptions().position(startPoint).title(bikeRoute.getOrigin()));
+        map.addMarker(new MarkerOptions().position(endPoint).title(bikeRoute.getDestination()));
+
         // add polyline using points from directions
-        map.addPolyline(new PolylineOptions()
-                .addAll(directions.latLngs)
-                .color(Color.BLUE));
-        map.moveCamera(CameraUpdateFactory.newLatLngZoom(startPoint, 13));
+//        map.addPolyline(new PolylineOptions()
+//                .addAll(directions.latLngs)
+//                .color(Color.BLUE));
+
+        List<LatLng> latLngs = new ArrayList<>();
+        for(int i = 0; i < routeSize;i++){
+            LatLng latLng = new LatLng(latitudeList.get(i), longitudeList.get(i));
+            latLngs.add(latLng);
+        }
+        addPolylineTo(latLngs);
+
+        LatLng centerPoint = new LatLng(latitudeList.get(routeSize/2), longitudeList.get(routeSize/2));
+        map.moveCamera(CameraUpdateFactory.newLatLngZoom(centerPoint, 15));
     }
 
-    @Override
-    public void BikeRouteSuccess(Directions directions) {
-        updateMap(bikeRoute.getOrigin(), bikeRoute.getDestination(), directions);
+    private static final float POLYLINE_WIDTH_IN_PIXELS = 10;
+    private static final float POLYLINE_STROKE_WIDTH_IN_PIXELS = 2;
+
+    public void addPolylineTo(List<LatLng> latLngs) {
+        int fillColor = ContextCompat.getColor(this, R.color.polylineFillColor);
+        int strokeColor = ContextCompat.getColor(this, R.color.polylineStrokeColor);
+
+        PolylineOptions fill = new PolylineOptions();
+        fill.color(fillColor).width(POLYLINE_WIDTH_IN_PIXELS).addAll(latLngs);
+
+
+        map.addPolyline(fill);
+//        googleMap.addPolyline(fill);
     }
 
-    @Override
-    public void BikeRouteFailed() {
-        Toast.makeText(this, "Error, Try again later", Toast.LENGTH_SHORT).show();
-    }
 }

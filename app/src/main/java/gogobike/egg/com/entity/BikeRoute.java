@@ -2,6 +2,7 @@ package gogobike.egg.com.entity;
 
 
 import java.io.Serializable;
+import java.util.List;
 
 public class BikeRoute implements Serializable {
 
@@ -15,7 +16,8 @@ public class BikeRoute implements Serializable {
     private float kilometer;
     private int time;
     private boolean hasBikeRentalStation;
-
+    private List<Double> latitudeList;
+    private List<Double> LongitudeList;
 
 
     public String getOrigin() {
@@ -33,7 +35,6 @@ public class BikeRoute implements Serializable {
     public void setDestination(String destination) {
         this.destination = destination;
     }
-
 
 
     public String getRouteName() {
@@ -74,5 +75,21 @@ public class BikeRoute implements Serializable {
 
     public void setHasBikeRentalStation(boolean hasBikeRentalStation) {
         this.hasBikeRentalStation = hasBikeRentalStation;
+    }
+
+    public List<Double> getLatitudeList() {
+        return latitudeList;
+    }
+
+    public void setLatitudeList(List<Double> latitudeList) {
+        this.latitudeList = latitudeList;
+    }
+
+    public List<Double> getLongitudeList() {
+        return LongitudeList;
+    }
+
+    public void setLongitudeList(List<Double> longitudeList) {
+        LongitudeList = longitudeList;
     }
 }

@@ -12,6 +12,7 @@ import java.util.List;
 
 import gogobike.egg.com.adapter.RouteListAdapter;
 import gogobike.egg.com.entity.BikeRoute;
+import gogobike.egg.com.route.TamsuiRoutes;
 
 public class RouteListActivity extends AppCompatActivity implements AdapterView.OnItemClickListener {
 
@@ -37,13 +38,15 @@ public class RouteListActivity extends AppCompatActivity implements AdapterView.
         bikeRoute1.setHasBikeRentalStation(true);
 
         BikeRoute bikeRoute2 = new BikeRoute();
-        bikeRoute2.setRouteName("淡水漁人碼頭");
-        bikeRoute2.setOrigin("淡水捷運站");
-        bikeRoute2.setDestination("淡水漁人碼頭");
+        bikeRoute2.setRouteName("淡水紅樹林");
+        bikeRoute2.setOrigin("淡水");
+        bikeRoute2.setDestination("紅樹林");
         bikeRoute2.setPokemonStationNumber(8);
         bikeRoute2.setKilometer(4.3f);
         bikeRoute2.setTime(60);
         bikeRoute2.setHasBikeRentalStation(true);
+        bikeRoute2.setLatitudeList(TamsuiRoutes.generateLatitude());
+        bikeRoute2.setLongitudeList(TamsuiRoutes.generateLongitude());
 
         bikeRouteList.add(bikeRoute1);
         bikeRouteList.add(bikeRoute2);
@@ -64,7 +67,12 @@ public class RouteListActivity extends AppCompatActivity implements AdapterView.
 
     public void startMapActivity(BikeRoute bikeRoute) {
         Intent intent = new Intent(this, MapActivity.class);
-        intent.putExtra(MapActivity.SERIALIZABLE_BIKE_ROUTE_DATA, bikeRoute);
+
+        Bundle bundle = new Bundle();
+        bundle.putSerializable(MapActivity.SERIALIZABLE_BIKE_ROUTE_DATA, bikeRoute);
+
+        intent.putExtras(bundle);
         startActivity(intent);
     }
+
 }

@@ -16,5 +16,6 @@ public class MainActivity extends AppCompatActivity {
     public void startRouteListActivity(View view) {
         Intent intent = new Intent(this, RouteListActivity.class);
         startActivity(intent);
+
     }
 }

@@ -8,7 +8,12 @@
         android:id="@+id/routeListActivity_listView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:divider="@android:color/transparent"
+        android:layout_marginLeft="4dp"
+        android:layout_marginRight="4dp"
+        android:scrollbars="none"
+        android:translationZ="2dp"
+        android:background="@android:color/white"
+        android:divider="@android:color/darker_gray"
         android:dividerHeight="2dp"/>
 
 </FrameLayout>

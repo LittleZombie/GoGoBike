@@ -19,6 +19,9 @@ public class BikeRoute implements Serializable {
     private List<Double> latitudeList;
     private List<Double> LongitudeList;
 
+    private float ratingScore;
+    private int imageResourceId;
+
 
     public String getOrigin() {
         return origin;
@@ -91,5 +94,21 @@ public class BikeRoute implements Serializable {
 
     public void setLongitudeList(List<Double> longitudeList) {
         LongitudeList = longitudeList;
+    }
+
+    public float getRatingScore() {
+        return ratingScore;
+    }
+
+    public void setRatingScore(float ratingScore) {
+        this.ratingScore = ratingScore;
+    }
+
+    public int getImageResourceId() {
+        return imageResourceId;
+    }
+
+    public void setImageResourceId(int imageResourceId) {
+        this.imageResourceId = imageResourceId;
     }
 }

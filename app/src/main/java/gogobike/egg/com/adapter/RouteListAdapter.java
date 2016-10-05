@@ -67,17 +67,12 @@ public class RouteListAdapter extends BaseAdapter {
 
         BikeRoute bikeRoute = getItem(i);
 
-        //TODO setImage resource
-        viewHolder.imageView.setImageResource(R.mipmap.ic_launcher);
-
-        //TODO set ratingBar style
-        viewHolder.ratingBar.setRating(3.5f);
-
-
+        viewHolder.imageView.setImageResource(bikeRoute.getImageResourceId());
+        viewHolder.ratingBar.setRating(bikeRoute.getRatingScore());
         viewHolder.routeNameTextView.setText(bikeRoute.getRouteName());
         viewHolder.pokemonTextView.setText("Pokemon Station : " + bikeRoute.getPokemonStationNumber());
         viewHolder.kmTextView.setText("Kilometer : " + bikeRoute.getKilometer());
-        viewHolder.timeTextView.setText("Time : " + bikeRoute.getTime() + "minute");
+        viewHolder.timeTextView.setText("Time : " + bikeRoute.getTime() + " minute");
 
         String yesOrNo = bikeRoute.isHasBikeRentalStation() ? "YES" : "No";
         viewHolder.rentalTextView.setText("Bike Rental Station : " + yesOrNo);

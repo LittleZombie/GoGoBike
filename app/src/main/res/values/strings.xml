@@ -1,5 +1,19 @@
 <resources>
     <string name="app_name">GoGoBike</string>
+    <string name="title_activity_recommended_route">Recommended Route</string>
+    <string name="title_activity_route_record">Route Record</string>
+    <string name="recommended_route_choose">Choose the type of route you want to riding</string>
+    <string-array name="area_spinner">
+        <item>All</item>
+        <item>Taipei</item>
+        <item>Taichung</item>
+        <item>Kaohsiung</item>
+    </string-array>
+    <string name="title_activity_route_list">Route List</string>
+    <string name="pokemon_station">Pokemon Station : </string>
+    <string name="kilometer">Kilometer : </string>
+    <string name="time">Time : %s minute</string>
+    <string name="bike_rental_station">Bike Rental Station : </string>
 
     <!--    Permissions    -->
     <string name="permission_rationale_location">Access to the location service is required to demonstrate the \'my location\' feature, which shows your current location on the map.</string>

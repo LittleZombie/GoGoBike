@@ -4,12 +4,6 @@
               android:layout_width="match_parent"
               android:layout_height="match_parent">
 
-    <!--<android.support.v7.widget.Toolbar-->
-        <!--android:id="@+id/toolbar"-->
-        <!--android:layout_width="match_parent"-->
-        <!--android:layout_height="?attr/actionBarSize"-->
-        <!--android:background="?attr/colorPrimary"/>-->
-
     <android.support.design.widget.FloatingActionButton
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -18,39 +12,23 @@
         android:src="@android:drawable/ic_menu_edit"
         android:onClick="onEditFloatingActionButtonClick"/>
 
-    <!--<LinearLayout-->
-        <!--android:layout_width="match_parent"-->
-        <!--android:layout_height="wrap_content"-->
-        <!--android:background="@android:color/holo_blue_light"-->
-        <!--android:gravity="center"-->
-        <!--android:layout_margin="8dp"-->
-        <!--android:padding="16dp"-->
-        <!--android:orientation="horizontal"-->
-        <!--android:onClick="onEditDataLinearLayoutClick">-->
-        <!--<TextView-->
-            <!--android:layout_width="wrap_content"-->
-            <!--android:layout_height="wrap_content"-->
-            <!--android:text="Edit Body Data"/>-->
-    <!--</LinearLayout>-->
-
     <ImageView
         android:layout_width="match_parent"
-        android:layout_height="160dp"
-        android:layout_marginTop="16dp"
+        android:layout_height="120dp"
         android:scaleType="fitXY"
         android:src="@drawable/relaxed_image"
         android:onClick="onRelaxedImageViewClick"/>
 
     <ImageView
         android:layout_width="match_parent"
-        android:layout_height="160dp"
+        android:layout_height="120dp"
         android:scaleType="fitXY"
         android:src="@drawable/general_image"
         android:onClick="onGeneralImageViewClick"/>
 
     <ImageView
         android:layout_width="match_parent"
-        android:layout_height="160dp"
+        android:layout_height="120dp"
         android:scaleType="fitXY"
         android:src="@drawable/challenge_image"
         android:onClick="onChallengeImageViewClick"/>

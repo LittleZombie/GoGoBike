@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
@@ -16,6 +17,7 @@ import android.widget.TextView;
 public class RecommendedRouteActivity extends AppCompatActivity {
 
     private enum ChallengeLevel {Relaxed, General, Challenge}
+    public enum Area {All, Taipei, Taichung, Kaohsiung}
     private int selectLevel = 0;
     private final String BODY_DATA_SHARED_PREFERENCE = "BODY_DATA_SHARED_PREFERENCE";
     private final String ISBOY = "ISBOY";
@@ -34,6 +36,7 @@ public class RecommendedRouteActivity extends AppCompatActivity {
         if (!sharedPreferences.getBoolean(ISRECORDPROFILE, false)) {
             setContentView(R.layout.activity_recommended_route);
             viewHolder = new RecommendRouteViewHolder();
+            layoutPersonalProfile();
         } else {
             setContentView(R.layout.activity_recommended_route_no_type_area);
         }
@@ -57,6 +60,20 @@ public class RecommendedRouteActivity extends AppCompatActivity {
                 break;
         }
         return true;
+    }
+
+    private void layoutPersonalProfile() {
+        if (sharedPreferences.getBoolean(ISRECORDPROFILE, false)) {
+            if (sharedPreferences.getBoolean(ISBOY, true)) {
+                viewHolder.boyRadioButton.setChecked(true);
+            } else {
+                viewHolder.girlRadioButton.setChecked(true);
+            }
+
+            viewHolder.heightEditText.setText("" + sharedPreferences.getFloat(HEIGHT, 0));
+            viewHolder.weightEditText.setText("" + sharedPreferences.getFloat(WEIGHT, 0));
+            viewHolder.areaSpinner.setSelection(sharedPreferences.getInt(AREA, 0));
+        }
     }
 
     public void onRelaxedButtonClick(View view) {
@@ -83,6 +100,7 @@ public class RecommendedRouteActivity extends AppCompatActivity {
     public void onEditFloatingActionButtonClick(View view) {
         setContentView(R.layout.activity_recommended_route);
         viewHolder = new RecommendRouteViewHolder();
+        layoutPersonalProfile();
         initToolbar();
     }
 
@@ -161,7 +179,10 @@ public class RecommendedRouteActivity extends AppCompatActivity {
 
     private void startRouteListActivity(double BMIValue, int selectLevel, int selectedArea) {
         int routeWeight = getRouteWeight(BMIValue, selectLevel);
+        Log.i(getClass().getSimpleName(), "Weight:" + routeWeight);
         Intent intent = new Intent(this, RouteListActivity.class);
+        intent.putExtra(RouteListActivity.INTENT_INT_ROUTE_WEIGHT, routeWeight);
+        intent.putExtra(RouteListActivity.INTENT_INT_AREA, selectedArea);
         startActivity(intent);
     }
 

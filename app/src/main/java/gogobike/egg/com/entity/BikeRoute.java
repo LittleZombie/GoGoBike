@@ -4,6 +4,8 @@ package gogobike.egg.com.entity;
 import java.io.Serializable;
 import java.util.List;
 
+import gogobike.egg.com.gogobike.RecommendedRouteActivity;
+
 public class BikeRoute implements Serializable {
 
     private String origin;
@@ -21,6 +23,9 @@ public class BikeRoute implements Serializable {
 
     private float ratingScore;
     private int imageResourceId;
+
+    private int weight;
+    private RecommendedRouteActivity.Area area;
 
 
     public String getOrigin() {
@@ -110,5 +115,21 @@ public class BikeRoute implements Serializable {
 
     public void setImageResourceId(int imageResourceId) {
         this.imageResourceId = imageResourceId;
+    }
+
+    public int getWeight() {
+        return weight;
+    }
+
+    public void setWeight(int weight) {
+        this.weight = weight;
+    }
+
+    public RecommendedRouteActivity.Area getArea() {
+        return area;
+    }
+
+    public void setArea(RecommendedRouteActivity.Area area) {
+        this.area = area;
     }
 }

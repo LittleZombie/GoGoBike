@@ -154,8 +154,13 @@ public class RouteListActivity extends AppCompatActivity implements AdapterView.
     private void layoutListView() {
         RouteListAdapter adapter = new RouteListAdapter(bikeRouteList, this, getWeight(), getArea());
         ListView listView = (ListView) findViewById(R.id.routeListActivity_listView);
-        listView.setAdapter(adapter);
-        listView.setOnItemClickListener(this);
+        if (adapter.getCount() > 0) {
+            listView.setAdapter(adapter);
+            listView.setOnItemClickListener(this);
+        } else {
+            listView.setVisibility(View.GONE);
+            findViewById(R.id.routeListActivity_noRouteLinearLayout).setVisibility(View.VISIBLE);
+        }
     }
 
     private int getWeight() {

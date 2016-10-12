@@ -29,7 +29,7 @@ public class RouteListAdapter extends BaseAdapter {
         this.bikeRouteList = new ArrayList<>();
         for (BikeRoute bikeRoute : bikeRouteList) {
             RecommendedRouteActivity.Area routeArea = bikeRoute.getArea();
-            if (bikeRoute.getWeight() <= weight && routeArea != null && (routeArea == RecommendedRouteActivity.Area.All || routeArea.ordinal() == area)) {
+            if (bikeRoute.getWeight() <= weight && routeArea != null && (area == RecommendedRouteActivity.Area.All.ordinal() || routeArea.ordinal() == area)) {
                 this.bikeRouteList.add(bikeRoute);
             }
         }

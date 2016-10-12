@@ -105,18 +105,18 @@ public class RecommendedRouteActivity extends AppCompatActivity {
     }
 
     public void onRelaxedImageViewClick(View view) {
-        float BMIValue = sharedPreferences.getFloat(BMI, 0);
-        startRouteListActivity(BMIValue,  selectLevel, ChallengeLevel.Relaxed.ordinal() + 1);
+        startRouteListActivity(sharedPreferences.getFloat(BMI, 0),
+                ChallengeLevel.Relaxed.ordinal() + 1, sharedPreferences.getInt(AREA, 0));
     }
 
     public void onGeneralImageViewClick(View view) {
-        float BMIValue = sharedPreferences.getFloat(BMI, 0);
-        startRouteListActivity(BMIValue,  selectLevel, ChallengeLevel.General.ordinal() + 1);
+        startRouteListActivity(sharedPreferences.getFloat(BMI, 0),
+                ChallengeLevel.General.ordinal() + 1, sharedPreferences.getInt(AREA, 0));
     }
 
     public void onChallengeImageViewClick(View view) {
-        float BMIValue = sharedPreferences.getFloat(BMI, 0);
-        startRouteListActivity(BMIValue,  selectLevel, ChallengeLevel.Challenge.ordinal() + 1);
+        startRouteListActivity(sharedPreferences.getFloat(BMI, 0),
+                ChallengeLevel.Challenge.ordinal() + 1, sharedPreferences.getInt(AREA, 0));
     }
 
     public void onChangeFloatingActionButtonClick(View view) {

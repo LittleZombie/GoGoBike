@@ -3,6 +3,7 @@
     <string name="title_activity_recommended_route">Recommended Route</string>
     <string name="title_activity_route_record">Route Record</string>
     <string name="recommended_route_choose">Choose the type of route you want to riding</string>
+    <string name="no_route_found">Sorry! \nWe have no route for your choose. Please change your route area.</string>
     <string-array name="area_spinner">
         <item>All</item>
         <item>Taipei</item>

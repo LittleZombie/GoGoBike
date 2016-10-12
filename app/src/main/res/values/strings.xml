@@ -2,8 +2,10 @@
     <string name="app_name">GoGoBike</string>
     <string name="title_activity_recommended_route">Recommended Route</string>
     <string name="title_activity_route_record">Route Record</string>
+    <string name="title_activity_alarm_setting">Alarm Setting</string>
     <string name="recommended_route_choose">Choose the type of route you want to riding</string>
     <string name="no_route_found">Sorry! \nWe have no route for your choose. Please change your route area.</string>
+    <string name="alarm_dialog_message">Setting the alarm clock?</string>
     <string-array name="area_spinner">
         <item>All</item>
         <item>Taipei</item>

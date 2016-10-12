@@ -67,6 +67,7 @@ public class RouteListActivity extends AppCompatActivity implements AdapterView.
         bikeRoute1.setLongitudeList(TamsuiRoutes.generateLongitude());
         bikeRoute1.setWeight(7);
         bikeRoute1.setArea(RecommendedRouteActivity.Area.Taipei);
+        bikeRoute1.setPokemonImageResourceId(new int[]{R.drawable.pokemon_4, R.drawable.pokemon_5});
 
         BikeRoute bikeRoute2 = new BikeRoute();
         bikeRoute2.setRouteName("淡水-紅樹林");
@@ -82,6 +83,7 @@ public class RouteListActivity extends AppCompatActivity implements AdapterView.
         bikeRoute2.setLongitudeList(TamsuiRoutes.generateLongitude());
         bikeRoute2.setWeight(3);
         bikeRoute2.setArea(RecommendedRouteActivity.Area.Taipei);
+        bikeRoute2.setPokemonImageResourceId(new int[]{R.drawable.pokemon_1, R.drawable.pokemon_2, R.drawable.pokemon_3});
 
         BikeRoute bikeRoute3 = new BikeRoute();
         bikeRoute3.setRouteName("竹圍-關渡");
@@ -97,6 +99,7 @@ public class RouteListActivity extends AppCompatActivity implements AdapterView.
         bikeRoute3.setLongitudeList(TamsuiRoutes.generateLongitude());
         bikeRoute3.setWeight(5);
         bikeRoute3.setArea(RecommendedRouteActivity.Area.Taipei);
+        bikeRoute3.setPokemonImageResourceId(new int[]{R.drawable.pokemon_1, R.drawable.pokemon_2, R.drawable.pokemon_3, R.drawable.pokemon_4, R.drawable.pokemon_5, R.drawable.pokemon_6});
 
         BikeRoute bikeRoute4 = new BikeRoute();
         bikeRoute4.setRouteName("北投-貴子坑");

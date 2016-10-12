@@ -10,7 +10,8 @@
         android:layout_gravity="top|end"
         android:layout_margin="16dp"
         android:src="@android:drawable/ic_menu_edit"
-        android:onClick="onEditFloatingActionButtonClick"/>
+        android:onClick="onEditFloatingActionButtonClick"
+        android:scaleType="center"/>
 
     <ImageView
         android:layout_width="match_parent"

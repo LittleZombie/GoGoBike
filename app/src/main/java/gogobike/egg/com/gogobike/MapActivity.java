@@ -1,12 +1,20 @@
 package gogobike.egg.com.gogobike;
 
 import android.Manifest;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
-import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
+import android.support.v7.app.ActionBar;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
+import android.view.MenuItem;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.TextView;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -14,7 +22,6 @@ import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
-import com.google.android.gms.maps.model.Polyline;
 import com.google.android.gms.maps.model.PolylineOptions;
 
 import java.util.ArrayList;
@@ -43,8 +50,21 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
 
         getExtras();
 
+        initActionbar();
         initGoogleMapApiKey();
         initMapFragment();
+        layoutRoute();
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()){
+            case android.R.id.home:
+                onBackPressed();
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
     }
 
     private void getExtras() {
@@ -61,6 +81,14 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
         bikeRoute = (BikeRoute) bundle.getSerializable(SERIALIZABLE_BIKE_ROUTE_DATA);
     }
 
+    private void initActionbar() {
+        ActionBar actionBar = getSupportActionBar();
+        if (actionBar != null) {
+            actionBar.setTitle(R.string.title_activity_recommended_route);
+            actionBar.setDisplayHomeAsUpEnabled(true);
+        }
+    }
+
     private void initGoogleMapApiKey() {
         SERVER_KEY = getResources().getString(R.string.google_maps_key);
     }
@@ -72,6 +100,29 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
             PermissionUtils.PermissionDeniedDialog
                     .newInstance(false).show(getSupportFragmentManager(), "dialog");
             mShowPermissionDeniedDialog = false;
+        }
+    }
+
+    private void layoutRoute() {
+        if (bikeRoute == null) {
+            return;
+        }
+
+        ((TextView) findViewById(R.id.mapActivity_routeNameTextView)).setText(bikeRoute.getRouteName());
+        ((TextView) findViewById(R.id.mapActivity_routeLengthTextView)).setText("(" + bikeRoute.getKilometer() + "KM)");
+        LinearLayout pokemonLinearLayout = (LinearLayout) findViewById(R.id.mapActivity_pokemonLinearLayout);
+        pokemonLinearLayout.setBackgroundResource(bikeRoute.getImageResourceId());
+        if (bikeRoute.getPokemonImageResourceId() == null) {
+            return;
+        }
+
+        for (int imageId : bikeRoute.getPokemonImageResourceId()) {
+            ImageView imageView = new ImageView(this);
+            imageView.setImageResource(imageId);
+            LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+            layoutParams.setMargins(16, 0, 0, 16);
+            imageView.setLayoutParams(layoutParams);
+            pokemonLinearLayout.addView(imageView);
         }
     }
 
@@ -168,4 +219,19 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
 //        googleMap.addPolyline(fill);
     }
 
+    public void onBlueBikeImageButtonClick(View view) {
+        new AlertDialog.Builder(this).setMessage(R.string.alarm_dialog_message)
+                .setNegativeButton("No", null)
+                .setPositiveButton("Setting", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        startAlarmSettingActivity();
+                    }
+                }).show();
+    }
+
+    private void startAlarmSettingActivity() {
+        Intent intent = new Intent(this, AlarmSetting.class);
+        startActivity(intent);
+    }
 }

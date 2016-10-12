@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
-<manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="gogobike.egg.com.gogobike">
+<manifest package="gogobike.egg.com.gogobike"
+          xmlns:android="http://schemas.android.com/apk/res/android">
 
     <!--
          The ACCESS_COARSE/FINE_LOCATION permissions are not required to use
          Google Maps Android API v2, but you must specify either coarse or fine
          location permissions for the 'MyLocation' functionality.
     -->
-    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
 
     <application
         android:allowBackup="true"
@@ -26,29 +26,26 @@
         -->
         <meta-data
             android:name="com.google.android.geo.API_KEY"
-            android:value="@string/google_maps_key" />
+            android:value="@string/google_maps_key"/>
 
         <activity
             android:name=".HomeActivity"
             android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
+                <action android:name="android.intent.action.MAIN"/>
 
-                <category android:name="android.intent.category.LAUNCHER" />
+                <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
         </activity>
         <activity android:name=".MainActivity"/>
-
         <activity android:name=".RouteListActivity"/>
-        <activity android:name=".MapActivity" />
-        <activity
-            android:name=".RecommendedRouteActivity">
+        <activity android:name=".MapActivity"/>
+        <activity android:name=".RecommendedRouteActivity">
         </activity>
-        <activity
-            android:name=".RouteRecordActivity">
+        <activity android:name=".RouteRecordActivity">
         </activity>
-
-
+        <activity android:name=".AlarmSetting">
+        </activity>
     </application>
 
 </manifest>

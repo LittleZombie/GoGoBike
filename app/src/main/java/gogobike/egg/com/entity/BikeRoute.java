@@ -20,6 +20,7 @@ public class BikeRoute implements Serializable {
     private boolean hasBikeRentalStation;
     private List<Double> latitudeList;
     private List<Double> LongitudeList;
+    private int[] pokemonImageResourceId;
 
     private float ratingScore;
     private int imageResourceId;
@@ -131,5 +132,13 @@ public class BikeRoute implements Serializable {
 
     public void setArea(RecommendedRouteActivity.Area area) {
         this.area = area;
+    }
+
+    public int[] getPokemonImageResourceId() {
+        return pokemonImageResourceId;
+    }
+
+    public void setPokemonImageResourceId(int[] pokemonImageResourceId) {
+        this.pokemonImageResourceId = pokemonImageResourceId;
     }
 }

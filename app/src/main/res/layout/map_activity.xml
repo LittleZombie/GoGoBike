@@ -1,12 +1,76 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent">
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              android:layout_margin="8dp"
+              android:orientation="vertical">
 
-    <fragment
-        android:id="@+id/map"
-        class="com.google.android.gms.maps.SupportMapFragment"
+    <LinearLayout
+        android:id="@+id/mapActivity_pokemonLinearLayout"
         android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+        android:layout_height="96dp"
+        android:gravity="bottom"
+        android:orientation="horizontal">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/rectangle"
+            android:paddingLeft="8dp"
+            android:paddingRight="8dp"
+            android:layout_marginLeft="4dp"
+            android:layout_marginStart="4dp"
+            android:layout_marginBottom="8dp"
+            android:text="Pokemon"
+            android:textColor="@android:color/white"
+            android:textStyle="bold"/>
+    </LinearLayout>
 
-</RelativeLayout>
+    <!--android:background="#162029"-->
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="8dp"
+        android:background="#2a4151"
+        android:padding="4dp">
+        <fragment
+            android:id="@+id/map"
+            class="com.google.android.gms.maps.SupportMapFragment"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginBottom="44dp"/>
+
+        <ImageButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentEnd="true"
+            android:layout_marginRight="16dp"
+            android:layout_marginEnd="16dp"
+            android:background="@android:color/transparent"
+            android:src="@drawable/bike_blue"
+            android:onClick="onBlueBikeImageButtonClick"/>
+
+        <TextView
+            android:id="@+id/mapActivity_routeNameTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:textColor="@android:color/holo_orange_light"
+            android:textSize="28sp"
+            android:textStyle="bold"/>
+
+        <TextView
+            android:id="@+id/mapActivity_routeLengthTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_toRightOf="@id/mapActivity_routeNameTextView"
+            android:layout_toEndOf="@id/mapActivity_routeNameTextView"
+            android:layout_marginBottom="8dp"
+            android:layout_marginLeft="8dp"
+            android:layout_marginStart="8dp"
+            android:textColor="@android:color/white"
+            android:textSize="20sp"/>
+    </RelativeLayout>
+</LinearLayout>

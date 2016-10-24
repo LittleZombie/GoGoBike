@@ -37,6 +37,16 @@
         android:paddingRight="4dp">
 
         <TextView
+            android:id="@+id/routeListItem_alarmTimeTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:visibility="gone"
+            android:textColor="@android:color/holo_green_dark"
+            android:textSize="14dp"
+            android:textStyle="bold"
+            tools:text="2016/10/25 12:00" />
+
+        <TextView
             android:id="@+id/routeListItem_routeNameTextView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

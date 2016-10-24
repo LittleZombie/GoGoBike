@@ -9,7 +9,7 @@
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
     android:orientation="vertical"
-    tools:context="gogobike.egg.com.gogobike.AlarmSetting">
+    tools:context="gogobike.egg.com.gogobike.AlarmSettingActivity">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -42,6 +42,7 @@
         android:layout_marginTop="16dp">
 
         <ImageView
+            android:id="@+id/alarmSetting_timeCircleImageView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:src="@drawable/time_circle"/>
@@ -50,7 +51,6 @@
             android:id="@+id/alarmSetting_timeTextView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="12:00"
             android:textSize="96sp"
             android:textColor="@android:color/black"
             android:textStyle="bold"
@@ -58,6 +58,21 @@
             android:layout_marginLeft="24dp"
             android:layout_marginStart="24dp"
             android:layout_centerVertical="true"/>
+
+        <TextView
+            android:id="@+id/alarmSetting_amPmTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="56sp"
+            android:textColor="@android:color/black"
+            android:textStyle="bold"
+            android:onClick="onTimeTextViewClick"
+            android:text="AM"
+            android:layout_marginRight="20dp"
+            android:layout_marginEnd="20dp"
+            android:layout_alignBottom="@id/alarmSetting_timeCircleImageView"
+            android:layout_alignRight="@id/alarmSetting_timeCircleImageView"
+            android:layout_alignEnd="@id/alarmSetting_timeCircleImageView"/>
     </RelativeLayout>
 
     <ImageButton
@@ -65,6 +80,7 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:layout_marginTop="40dp"
+        android:onClick="onTimeSettingImageButtonClick"
         android:background="@android:color/transparent"
         android:src="@drawable/time_setting"/>
 

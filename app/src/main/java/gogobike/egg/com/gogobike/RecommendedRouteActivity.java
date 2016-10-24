@@ -4,7 +4,9 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
@@ -44,11 +46,12 @@ public class RecommendedRouteActivity extends AppCompatActivity {
     }
 
     private void initToolbar() {
-//        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-//        setSupportActionBar(toolbar);
-        if (getSupportActionBar() != null) {
-            getSupportActionBar().setTitle(R.string.title_activity_recommended_route);
-            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        Toolbar toolbar = (Toolbar) findViewById(R.id.recommendedRouteActivity_toolbar);
+        setSupportActionBar(toolbar);
+        ActionBar actionBar = getSupportActionBar();
+        if (actionBar != null) {
+            actionBar.setTitle(R.string.title_activity_recommended_route);
+            actionBar.setDisplayHomeAsUpEnabled(true);
         }
     }
 
@@ -97,7 +100,7 @@ public class RecommendedRouteActivity extends AppCompatActivity {
         viewHolder.challengeImageView.setImageResource(R.drawable.bike_blue);
     }
 
-    public void onEditFloatingActionButtonClick(View view) {
+    public void onEditButtonClick(View view) {
         setContentView(R.layout.activity_recommended_route);
         viewHolder = new RecommendRouteViewHolder();
         layoutPersonalProfile();
@@ -121,6 +124,7 @@ public class RecommendedRouteActivity extends AppCompatActivity {
 
     public void onChangeFloatingActionButtonClick(View view) {
         setContentView(R.layout.activity_recommended_route_no_type_area);
+        initToolbar();
     }
 
     public void onRecommendImageViewClick(View view) {
@@ -181,6 +185,7 @@ public class RecommendedRouteActivity extends AppCompatActivity {
         int routeWeight = getRouteWeight(BMIValue, selectLevel);
         Log.i(getClass().getSimpleName(), "Weight:" + routeWeight);
         Intent intent = new Intent(this, RouteListActivity.class);
+        intent.putExtra(RouteListActivity.INTENT_INT_ROUTE_LIST_MODE, 1);
         intent.putExtra(RouteListActivity.INTENT_INT_ROUTE_WEIGHT, routeWeight);
         intent.putExtra(RouteListActivity.INTENT_INT_AREA, selectedArea);
         startActivity(intent);

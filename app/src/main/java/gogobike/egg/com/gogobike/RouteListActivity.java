@@ -1,6 +1,7 @@
 package gogobike.egg.com.gogobike;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
@@ -9,7 +10,11 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
 
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
+
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 
 import gogobike.egg.com.adapter.RouteListAdapter;
@@ -18,17 +23,26 @@ import gogobike.egg.com.route.TamsuiRoutes;
 
 public class RouteListActivity extends AppCompatActivity implements AdapterView.OnItemClickListener {
 
+    public static final String ROUTE_RECORD_SHARED_PREFERENCE = "ROUTE_RECORD_SHARED_PREFERENCE";
+    public static final String ROUTE_RECORD_LIST = "ROUTE_RECORD_LIST";
+    public static final String INTENT_INT_ROUTE_LIST_MODE = "INTENT_INT_ROUTE_LIST_MODE";
     public static final String INTENT_INT_ROUTE_WEIGHT = "INTENT_INT_ROUTE_WEIGHT";
     public static final String INTENT_INT_AREA = "INTENT_INT_AREA";
     private List<BikeRoute> bikeRouteList = new ArrayList<>();
+    private int mode;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.route_list_activity);
 
+        mode = getExtra();
         layoutActionBar();
-        generateRouteList();
+        if (mode < 2) {
+            generateRouteList();
+        } else {
+            getRouteListFromSharedPreference();
+        }
         layoutListView();
     }
 
@@ -43,11 +57,24 @@ public class RouteListActivity extends AppCompatActivity implements AdapterView.
         }
     }
 
+    public int getExtra() {
+        Intent intent = getIntent();
+        if(intent == null){
+            return 0;
+        }
+
+        return intent.getIntExtra(INTENT_INT_ROUTE_LIST_MODE, 0);
+    }
+
     private void layoutActionBar() {
         // Get a support ActionBar corresponding to this toolbar
         ActionBar ab = getSupportActionBar();
         if(ab != null) {
-            ab.setTitle("Recommend Route");
+            if (mode == 2) {
+                ab.setTitle("Route Record");
+            } else {
+                ab.setTitle("Recommend Route");
+            }
             ab.setDisplayHomeAsUpEnabled(true);
         }
     }
@@ -154,8 +181,14 @@ public class RouteListActivity extends AppCompatActivity implements AdapterView.
         bikeRouteList.add(bikeRoute6);
     }
 
+    public void getRouteListFromSharedPreference() {
+        SharedPreferences sharedPreferences = getSharedPreferences(RouteListActivity.ROUTE_RECORD_SHARED_PREFERENCE, MODE_PRIVATE);
+        String bikeRouteJsonString = sharedPreferences.getString(RouteListActivity.ROUTE_RECORD_LIST, "");
+        bikeRouteList = new Gson().fromJson(bikeRouteJsonString, new TypeToken<LinkedList<BikeRoute>>() {}.getType());
+    }
+
     private void layoutListView() {
-        RouteListAdapter adapter = new RouteListAdapter(bikeRouteList, this, getWeight(), getArea());
+        RouteListAdapter adapter = new RouteListAdapter(bikeRouteList, this, getWeight(), getArea(), mode);
         ListView listView = (ListView) findViewById(R.id.routeListActivity_listView);
         if (adapter.getCount() > 0) {
             listView.setAdapter(adapter);

@@ -27,6 +27,7 @@ public class BikeRoute implements Serializable {
 
     private int weight;
     private RecommendedRouteActivity.Area area;
+    private long alarmTime;
 
 
     public String getOrigin() {
@@ -132,6 +133,14 @@ public class BikeRoute implements Serializable {
 
     public void setArea(RecommendedRouteActivity.Area area) {
         this.area = area;
+    }
+
+    public long getAlarmTime() {
+        return alarmTime;
+    }
+
+    public void setAlarmTime(long alarmTime) {
+        this.alarmTime = alarmTime;
     }
 
     public int[] getPokemonImageResourceId() {

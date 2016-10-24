@@ -3,6 +3,7 @@ package gogobike.egg.com.gogobike;
 import android.Manifest;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
@@ -23,8 +24,11 @@ import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.maps.model.PolylineOptions;
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 
 import gogobike.egg.com.entity.BikeRoute;
@@ -35,6 +39,7 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
 
     public static final String SERIALIZABLE_BIKE_ROUTE_DATA = "SERIALIZABLE_BIKE_ROUTE_DATA";
     private static final int LOCATION_PERMISSION_REQUEST_CODE = 1;
+    private static final int ALARM_SETTING_REQUEST_CODE = 111;
 
     private static String urlRequest = "https://maps.googleapis.com/maps/api/directions/xml?";
     private static String SERVER_KEY;
@@ -65,6 +70,37 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
             default:
                 return super.onOptionsItemSelected(item);
         }
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == ALARM_SETTING_REQUEST_CODE && resultCode == RESULT_OK) {
+            onAlarmSettingActivityResult(data);
+        }
+    }
+
+    private void onAlarmSettingActivityResult(Intent data) {
+        SharedPreferences sharedPreferences = getSharedPreferences(RouteListActivity.ROUTE_RECORD_SHARED_PREFERENCE, MODE_PRIVATE);
+        String bikeRouteJsonString = sharedPreferences.getString(RouteListActivity.ROUTE_RECORD_LIST, null);
+        List<BikeRoute> bikeRoutes;
+//        JSONObject jsonObject;
+        if (bikeRouteJsonString == null) {
+            bikeRoutes = new LinkedList<>();
+        } else {
+//            try {
+                bikeRoutes = new Gson().fromJson(bikeRouteJsonString, new TypeToken<LinkedList<BikeRoute>>() {}.getType());
+//                jsonObject = new JSONObject(bikeRouteJsonString);
+//                bikeRoutes = (List<BikeRoute>) jsonObject.get("BikeRoutes");
+//            } catch (JSONException e) {
+//                e.printStackTrace();
+//            }
+        }
+        bikeRoute.setAlarmTime(data.getLongExtra(AlarmSettingActivity.INTENT_LONG_CALENDAR_MILLIS, 0));
+        bikeRoutes.add(bikeRoute);
+        sharedPreferences.edit().putString(RouteListActivity.ROUTE_RECORD_LIST, new Gson().toJson(bikeRoutes)).apply();
+        Intent intent = new Intent(this, HomeActivity.class);
+        startActivity(intent);
     }
 
     private void getExtras() {
@@ -231,7 +267,7 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
     }
 
     private void startAlarmSettingActivity() {
-        Intent intent = new Intent(this, AlarmSetting.class);
-        startActivity(intent);
+        Intent intent = new Intent(this, AlarmSettingActivity.class);
+        startActivityForResult(intent, ALARM_SETTING_REQUEST_CODE);
     }
 }

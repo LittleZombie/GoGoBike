@@ -19,7 +19,8 @@ public class HomeActivity extends AppCompatActivity {
     }
 
     public void onRouteRecordImageViewClick(View view) {
-        Intent intent = new Intent(this, RouteRecordActivity.class);
+        Intent intent = new Intent(this, RouteListActivity.class);
+        intent.putExtra(RouteListActivity.INTENT_INT_ROUTE_LIST_MODE, 2);
         startActivity(intent);
     }
 }

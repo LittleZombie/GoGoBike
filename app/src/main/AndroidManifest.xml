@@ -37,14 +37,12 @@
                 <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
         </activity>
-        <activity android:name=".MainActivity"/>
         <activity android:name=".RouteListActivity"/>
         <activity android:name=".MapActivity"/>
-        <activity android:name=".RecommendedRouteActivity">
+        <activity android:name=".RecommendedRouteActivity"
+                  android:theme="@style/AppTheme.NoActionBar">
         </activity>
-        <activity android:name=".RouteRecordActivity">
-        </activity>
-        <activity android:name=".AlarmSetting">
+        <activity android:name=".AlarmSettingActivity">
         </activity>
     </application>
 

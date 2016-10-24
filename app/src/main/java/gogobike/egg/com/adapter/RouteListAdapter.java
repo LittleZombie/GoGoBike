@@ -9,8 +9,11 @@ import android.widget.ImageView;
 import android.widget.RatingBar;
 import android.widget.TextView;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
+import java.util.Locale;
 
 import gogobike.egg.com.entity.BikeRoute;
 import gogobike.egg.com.gogobike.R;
@@ -25,7 +28,13 @@ public class RouteListAdapter extends BaseAdapter {
     private List<BikeRoute> bikeRouteList;
     private Context context;
 
-    public RouteListAdapter(List<BikeRoute> bikeRouteList, Context context, int weight, int area) {
+    public RouteListAdapter(List<BikeRoute> bikeRouteList, Context context, int weight, int area, int mode) {
+        this.context = context;
+        if (mode == 2) {
+            this.bikeRouteList = bikeRouteList;
+            return;
+        }
+
         this.bikeRouteList = new ArrayList<>();
         for (BikeRoute bikeRoute : bikeRouteList) {
             RecommendedRouteActivity.Area routeArea = bikeRoute.getArea();
@@ -33,7 +42,6 @@ public class RouteListAdapter extends BaseAdapter {
                 this.bikeRouteList.add(bikeRoute);
             }
         }
-        this.context = context;
     }
 
     @Override
@@ -61,6 +69,7 @@ public class RouteListAdapter extends BaseAdapter {
             viewHolder.imageView = (ImageView) view.findViewById(R.id.routeListItem_imageView);
             viewHolder.ratingBar = (RatingBar) view.findViewById(R.id.routeListItem_ratingBar);
 
+            viewHolder.alarmTimeTextView = (TextView) view.findViewById(R.id.routeListItem_alarmTimeTextView);
             viewHolder.routeNameTextView = (TextView) view.findViewById(R.id.routeListItem_routeNameTextView);
             viewHolder.pokemonTextView = (TextView) view.findViewById(R.id.routeListItem_pokemonStationTextView);
             viewHolder.kmTextView = (TextView) view.findViewById(R.id.routeListItem_kmTextView);
@@ -76,6 +85,15 @@ public class RouteListAdapter extends BaseAdapter {
 
         viewHolder.imageView.setImageResource(bikeRoute.getImageResourceId());
         viewHolder.ratingBar.setRating(bikeRoute.getRatingScore());
+        long timeInMillis = bikeRoute.getAlarmTime();
+        if (timeInMillis > 0) {
+            Calendar calendar = Calendar.getInstance();
+            calendar.setTimeInMillis(timeInMillis);
+            SimpleDateFormat sdf = new SimpleDateFormat("MM/dd/yyyy a hh:mm", Locale.US);
+            String time = sdf.format(calendar.getTime());
+            viewHolder.alarmTimeTextView.setText(time);
+            viewHolder.alarmTimeTextView.setVisibility(View.VISIBLE);
+        }
         viewHolder.routeNameTextView.setText(bikeRoute.getRouteName());
         viewHolder.pokemonTextView.setText("Pokemon Station : " + bikeRoute.getPokemonStationNumber());
         viewHolder.kmTextView.setText("Kilometer : " + bikeRoute.getKilometer());
@@ -92,6 +110,7 @@ public class RouteListAdapter extends BaseAdapter {
         ImageView imageView;
         RatingBar ratingBar;
 
+        TextView alarmTimeTextView;
         TextView routeNameTextView;
         TextView pokemonTextView;
         TextView kmTextView;

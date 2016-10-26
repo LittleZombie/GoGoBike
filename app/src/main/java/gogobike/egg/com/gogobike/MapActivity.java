@@ -21,6 +21,7 @@ import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.maps.model.PolylineOptions;
@@ -35,9 +36,10 @@ import gogobike.egg.com.entity.BikeRoute;
 import gogobike.egg.com.util.PermissionUtils;
 
 
-public class MapActivity extends AppCompatActivity implements OnMapReadyCallback {
+public class MapActivity extends AppCompatActivity implements OnMapReadyCallback, DialogInterface.OnDismissListener {
 
     public static final String SERIALIZABLE_BIKE_ROUTE_DATA = "SERIALIZABLE_BIKE_ROUTE_DATA";
+    public static final String INTENT_MAP_MODE = "INTENT_MAP_MODE";
     private static final int LOCATION_PERMISSION_REQUEST_CODE = 1;
     private static final int ALARM_SETTING_REQUEST_CODE = 111;
 
@@ -46,6 +48,8 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
 
     private BikeRoute bikeRoute;
     private GoogleMap map;
+    private int mode;
+    private boolean isRidingStart = false;
     private boolean mShowPermissionDeniedDialog = false;
 
     @Override
@@ -84,23 +88,16 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
         SharedPreferences sharedPreferences = getSharedPreferences(RouteListActivity.ROUTE_RECORD_SHARED_PREFERENCE, MODE_PRIVATE);
         String bikeRouteJsonString = sharedPreferences.getString(RouteListActivity.ROUTE_RECORD_LIST, null);
         List<BikeRoute> bikeRoutes;
-//        JSONObject jsonObject;
         if (bikeRouteJsonString == null) {
             bikeRoutes = new LinkedList<>();
         } else {
-//            try {
-                bikeRoutes = new Gson().fromJson(bikeRouteJsonString, new TypeToken<LinkedList<BikeRoute>>() {}.getType());
-//                jsonObject = new JSONObject(bikeRouteJsonString);
-//                bikeRoutes = (List<BikeRoute>) jsonObject.get("BikeRoutes");
-//            } catch (JSONException e) {
-//                e.printStackTrace();
-//            }
+            bikeRoutes = new Gson().fromJson(bikeRouteJsonString, new TypeToken<LinkedList<BikeRoute>>() {}.getType());
+
         }
         bikeRoute.setAlarmTime(data.getLongExtra(AlarmSettingActivity.INTENT_LONG_CALENDAR_MILLIS, 0));
         bikeRoutes.add(bikeRoute);
         sharedPreferences.edit().putString(RouteListActivity.ROUTE_RECORD_LIST, new Gson().toJson(bikeRoutes)).apply();
-        Intent intent = new Intent(this, HomeActivity.class);
-        startActivity(intent);
+        startHomeActivity();
     }
 
     private void getExtras() {
@@ -108,6 +105,7 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
         if(intent == null){
             return;
         }
+        mode = intent.getIntExtra(INTENT_MAP_MODE, 0);
 
         Bundle bundle = intent.getExtras();
         if(bundle == null){
@@ -120,7 +118,11 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
     private void initActionbar() {
         ActionBar actionBar = getSupportActionBar();
         if (actionBar != null) {
-            actionBar.setTitle(R.string.title_activity_recommended_route);
+            if (mode < 2) {
+                actionBar.setTitle(R.string.title_activity_recommended_route);
+            } else if (mode == 2) {
+                actionBar.setTitle(R.string.title_activity_route_record);
+            }
             actionBar.setDisplayHomeAsUpEnabled(true);
         }
     }
@@ -236,6 +238,12 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
         }
         addPolylineTo(latLngs);
 
+        //add poke stop
+        MarkerOptions pokeMarker = new MarkerOptions().icon(BitmapDescriptorFactory.fromResource(R.drawable.pokestop));
+        map.addMarker(pokeMarker.position(new LatLng(latitudeList.get(5), longitudeList.get(5))));
+        map.addMarker(pokeMarker.position(new LatLng(latitudeList.get(15), longitudeList.get(15))));
+        map.addMarker(pokeMarker.position(new LatLng(latitudeList.get(20), longitudeList.get(20))));
+
         LatLng centerPoint = new LatLng(latitudeList.get(routeSize/2), longitudeList.get(routeSize/2));
         map.moveCamera(CameraUpdateFactory.newLatLngZoom(centerPoint, 15));
     }
@@ -256,18 +264,70 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
     }
 
     public void onBlueBikeImageButtonClick(View view) {
-        new AlertDialog.Builder(this).setMessage(R.string.alarm_dialog_message)
-                .setNegativeButton("No", null)
-                .setPositiveButton("Setting", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        startAlarmSettingActivity();
-                    }
-                }).show();
+        if (mode < 2) {
+            new AlertDialog.Builder(this).setMessage(R.string.alarm_dialog_message)
+                    .setNegativeButton("No", null)
+                    .setPositiveButton("Setting", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            startAlarmSettingActivity();
+                        }
+                    }).show();
+        } else if (mode == 2 && !isRidingStart) {
+            isRidingStart = true;
+            findViewById(R.id.mapActivity_pokemonLinearLayout).setVisibility(View.GONE);
+            if (getSupportActionBar() != null) {
+                getSupportActionBar().hide();
+            }
+            LatLng centerPoint = new LatLng(bikeRoute.getLatitudeList().get(0), bikeRoute.getLongitudeList().get(0));
+            map.moveCamera(CameraUpdateFactory.newLatLngZoom(centerPoint, 18));
+        } else if (mode == 2) {
+            new AlertDialog.Builder(this).setMessage(R.string.end_riding_dialog_message)
+                    .setNegativeButton("No", null)
+                    .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            startRouteRatingDialog();
+                        }
+                    }).show();
+        }
     }
 
     private void startAlarmSettingActivity() {
         Intent intent = new Intent(this, AlarmSettingActivity.class);
+        Bundle bundle = new Bundle();
+        bundle.putSerializable(SERIALIZABLE_BIKE_ROUTE_DATA, bikeRoute);
+        intent.putExtras(bundle);
         startActivityForResult(intent, ALARM_SETTING_REQUEST_CODE);
+    }
+
+    private void startHomeActivity() {
+        Intent intent = new Intent(this, HomeActivity.class);
+        startActivity(intent);
+    }
+
+    private void startRouteRatingDialog() {
+        new AlertDialog.Builder(this)
+                .setView(R.layout.rating_dialog)
+                .setNegativeButton("Cancel", null)
+                .setPositiveButton("Send", null)
+                .setOnDismissListener(this).show();
+    }
+
+    @Override
+    public void onDismiss(DialogInterface dialog) {
+
+        SharedPreferences sharedPreferences = getSharedPreferences(RouteListActivity.ROUTE_RECORD_SHARED_PREFERENCE, MODE_PRIVATE);
+        String bikeRouteJsonString = sharedPreferences.getString(RouteListActivity.ROUTE_RECORD_LIST, "");
+        List<BikeRoute> bikeRouteList = new Gson().fromJson(bikeRouteJsonString, new TypeToken<LinkedList<BikeRoute>>() {}.getType());
+        List<BikeRoute> newBikeRouteList = new LinkedList<>();
+        for (BikeRoute bikeRoute : bikeRouteList) {
+            if(bikeRoute.getAlarmTime() != this.bikeRoute.getAlarmTime()) {
+                newBikeRouteList.add(bikeRoute);
+            }
+        }
+        sharedPreferences.edit().putString(RouteListActivity.ROUTE_RECORD_LIST, new Gson().toJson(newBikeRouteList)).apply();
+
+        startHomeActivity();
     }
 }

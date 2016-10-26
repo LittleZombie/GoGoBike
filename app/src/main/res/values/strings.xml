@@ -6,6 +6,7 @@
     <string name="recommended_route_choose">Choose the type of route you want to riding</string>
     <string name="no_route_found">Sorry! \nWe have no route for your choose. Please change your route area.</string>
     <string name="alarm_dialog_message">Setting the alarm clock?</string>
+    <string name="end_riding_dialog_message">Do you want to end riding this route?</string>
     <string-array name="area_spinner">
         <item>All</item>
         <item>Taipei</item>

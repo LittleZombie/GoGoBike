@@ -220,6 +220,7 @@ public class RouteListActivity extends AppCompatActivity implements AdapterView.
         bundle.putSerializable(MapActivity.SERIALIZABLE_BIKE_ROUTE_DATA, bikeRoute);
 
         intent.putExtras(bundle);
+        intent.putExtra(MapActivity.INTENT_MAP_MODE, mode);
         startActivity(intent);
     }
 

@@ -41,7 +41,8 @@
         <activity android:name=".RouteListActivity"/>
         <activity android:name=".MapActivity"/>
         <activity android:name=".RecommendedRouteActivity"
-                  android:theme="@style/AppTheme.NoActionBar">
+                  android:theme="@style/AppTheme.NoActionBar"
+                  android:windowSoftInputMode="adjustResize">
         </activity>
         <activity android:name=".AlarmSettingActivity">
         </activity>

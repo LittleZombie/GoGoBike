@@ -1,251 +1,269 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:orientation="vertical">
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
 
     <android.support.v7.widget.Toolbar
         android:id="@+id/recommendedRouteActivity_toolbar"
         android:layout_width="match_parent"
         android:layout_height="?attr/actionBarSize"
         android:background="?attr/colorPrimary"
-        app:titleTextColor="@android:color/white"
-        android:theme="@style/NoActionBar"/>
+        android:theme="@style/NoActionBar"
+        app:titleTextColor="@android:color/white" />
 
-    <LinearLayout
+    <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:layout_marginTop="32dp">
-        <ImageView
-            android:id="@+id/recommendedRouteActivity_relaxedImageView"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:layout_gravity="center"
-            android:src="@drawable/relaxed_button"
-            android:onClick="onRelaxedButtonClick"/>
+        android:layout_height="match_parent"
+        android:layout_below="@id/recommendedRouteActivity_toolbar">
 
-        <ImageView
-            android:id="@+id/recommendedRouteActivity_generalImageView"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:layout_gravity="center"
-            android:src="@drawable/general_button"
-            android:onClick="onGeneralButtonClick"/>
-
-        <ImageView
-            android:id="@+id/recommendedRouteActivity_challengeImageView"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:layout_gravity="center"
-            android:src="@drawable/challenge_button"
-            android:onClick="onChallengeButtonClick"/>
-    </LinearLayout>
-
-    <TextView
-        android:id="@+id/recommendedRouteActivity_typeErrorTextView"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:visibility="invisible"
-        android:text="Please choose type."
-        android:textColor="@android:color/holo_red_dark"/>
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:layout_marginLeft="16dp"
-        android:layout_marginStart="16dp"
-        android:layout_marginBottom="16dp">
         <LinearLayout
-            android:layout_width="0dp"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
             android:orientation="vertical">
-            <TextView
-                android:layout_width="wrap_content"
+
+            <LinearLayout
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center"
                 android:layout_marginTop="32dp"
-                android:layout_marginRight="8dp"
-                android:text="Personal profile"
-                android:textSize="22sp"
-                android:textStyle="bold"
-                android:textColor="@android:color/black"/>
+                android:orientation="horizontal">
+
+                <ImageView
+                    android:id="@+id/recommendedRouteActivity_relaxedImageView"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_weight="1"
+                    android:onClick="onRelaxedButtonClick"
+                    android:src="@drawable/relaxed_button" />
+
+                <ImageView
+                    android:id="@+id/recommendedRouteActivity_generalImageView"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_weight="1"
+                    android:onClick="onGeneralButtonClick"
+                    android:src="@drawable/general_button" />
+
+                <ImageView
+                    android:id="@+id/recommendedRouteActivity_challengeImageView"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_weight="1"
+                    android:onClick="onChallengeButtonClick"
+                    android:src="@drawable/challenge_button" />
+            </LinearLayout>
+
+            <TextView
+                android:id="@+id/recommendedRouteActivity_typeErrorTextView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Please choose type."
+                android:textColor="@android:color/holo_red_dark"
+                android:visibility="invisible" />
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="16dp"
+                android:layout_marginBottom="16dp"
+                android:layout_marginLeft="16dp"
+                android:layout_marginStart="16dp"
                 android:orientation="horizontal">
-                <TextView
-                    android:layout_width="64dp"
-                    android:layout_height="wrap_content"
-                    android:text="Gender:"
-                    android:textSize="@dimen/choose_type_title"
-                    android:textStyle="bold"
-                    android:textColor="@android:color/black"/>
 
-                <RadioGroup
-                    android:id="@+id/recommendedRouteActivity_sexRadioGroup"
-                    android:layout_width="match_parent"
+                <LinearLayout
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:orientation="horizontal">
+                    android:layout_weight="1"
+                    android:orientation="vertical">
 
-                    <RadioButton
-                        android:id="@+id/recommendedRouteActivity_boyRadioButton"
+                    <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="B"
-                        android:textStyle="bold"
-                        android:textSize="@dimen/choose_type_title"/>
+                        android:layout_gravity="center"
+                        android:layout_marginRight="8dp"
+                        android:layout_marginTop="32dp"
+                        android:text="Personal profile"
+                        android:textColor="@android:color/black"
+                        android:textSize="22sp"
+                        android:textStyle="bold" />
 
-                    <RadioButton
-                        android:id="@+id/recommendedRouteActivity_girlRadioButton"
-                        android:layout_width="wrap_content"
+                    <LinearLayout
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="G"
-                        android:textStyle="bold"
-                        android:textSize="@dimen/choose_type_title"/>
-                </RadioGroup>
-            </LinearLayout>
+                        android:layout_marginTop="16dp"
+                        android:orientation="horizontal">
 
-            <TextView
-                android:id="@+id/recommendedRouteActivity_genderErrorTextView"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:visibility="gone"
-                android:text="Please choose gender."
-                android:textColor="@android:color/holo_red_dark"/>
+                        <TextView
+                            android:layout_width="64dp"
+                            android:layout_height="wrap_content"
+                            android:text="Gender:"
+                            android:textColor="@android:color/black"
+                            android:textSize="@dimen/choose_type_title"
+                            android:textStyle="bold" />
 
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal">
-                <TextView
-                    android:layout_width="64dp"
-                    android:layout_height="wrap_content"
-                    android:text="Height:"
-                    android:textSize="@dimen/choose_type_title"
-                    android:textStyle="bold"
-                    android:textColor="@android:color/black"/>
+                        <RadioGroup
+                            android:id="@+id/recommendedRouteActivity_sexRadioGroup"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal">
 
-                <EditText
-                    android:id="@+id/recommendedRouteActivity_heightEditText"
-                    android:layout_width="80dp"
-                    android:layout_height="wrap_content"
-                    android:gravity="center"
-                    android:background="@android:color/holo_orange_light"
-                    android:textSize="@dimen/choose_type_title"
-                    android:inputType="numberDecimal"/>
+                            <RadioButton
+                                android:id="@+id/recommendedRouteActivity_boyRadioButton"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="B"
+                                android:textSize="@dimen/choose_type_title"
+                                android:textStyle="bold" />
 
-                <TextView
+                            <RadioButton
+                                android:id="@+id/recommendedRouteActivity_girlRadioButton"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="G"
+                                android:textSize="@dimen/choose_type_title"
+                                android:textStyle="bold" />
+                        </RadioGroup>
+                    </LinearLayout>
+
+                    <TextView
+                        android:id="@+id/recommendedRouteActivity_genderErrorTextView"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="Please choose gender."
+                        android:textColor="@android:color/holo_red_dark"
+                        android:visibility="gone" />
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:layout_width="64dp"
+                            android:layout_height="wrap_content"
+                            android:text="Height:"
+                            android:textColor="@android:color/black"
+                            android:textSize="@dimen/choose_type_title"
+                            android:textStyle="bold" />
+
+                        <EditText
+                            android:id="@+id/recommendedRouteActivity_heightEditText"
+                            android:layout_width="80dp"
+                            android:layout_height="wrap_content"
+                            android:background="@android:color/holo_orange_light"
+                            android:gravity="center"
+                            android:inputType="numberDecimal"
+                            android:textSize="@dimen/choose_type_title" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="8dp"
+                            android:layout_marginStart="8dp"
+                            android:text="cm"
+                            android:textColor="@android:color/black"
+                            android:textSize="@dimen/choose_type_title"
+                            android:textStyle="bold" />
+
+                    </LinearLayout>
+
+                    <TextView
+                        android:id="@+id/recommendedRouteActivity_heightErrorTextView"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="Please type height."
+                        android:textColor="@android:color/holo_red_dark"
+                        android:visibility="gone" />
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="8dp"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:layout_width="64dp"
+                            android:layout_height="wrap_content"
+                            android:text="Weight:"
+                            android:textColor="@android:color/black"
+                            android:textSize="@dimen/choose_type_title"
+                            android:textStyle="bold" />
+
+                        <EditText
+                            android:id="@+id/recommendedRouteActivity_weightEditText"
+                            android:layout_width="80dp"
+                            android:layout_height="wrap_content"
+                            android:background="@android:color/holo_orange_light"
+                            android:gravity="center"
+                            android:inputType="numberDecimal" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="8dp"
+                            android:layout_marginStart="8dp"
+                            android:text="kg"
+                            android:textColor="@android:color/black"
+                            android:textSize="@dimen/choose_type_title"
+                            android:textStyle="bold" />
+                    </LinearLayout>
+
+                    <TextView
+                        android:id="@+id/recommendedRouteActivity_weightErrorTextView"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="Please type weight."
+                        android:textColor="@android:color/holo_red_dark"
+                        android:visibility="gone" />
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="8dp"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:layout_width="64dp"
+                            android:layout_height="wrap_content"
+                            android:text="Area:"
+                            android:textColor="@android:color/black"
+                            android:textSize="@dimen/choose_type_title"
+                            android:textStyle="bold" />
+
+                        <Spinner
+                            android:id="@+id/recommendedRouteActivity_areaSpinner"
+                            android:layout_width="120dp"
+                            android:layout_height="wrap_content"
+                            android:entries="@array/area_spinner"
+                            android:textAlignment="center" />
+
+                    </LinearLayout>
+
+                    <android.support.design.widget.FloatingActionButton
+                        android:layout_width="32dp"
+                        android:layout_height="32dp"
+                        android:layout_margin="16dp"
+                        android:onClick="onChangeFloatingActionButtonClick"
+                        android:src="@android:drawable/ic_menu_edit" />
+                </LinearLayout>
+
+                <ImageView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="8dp"
-                    android:layout_marginStart="8dp"
-                    android:text="cm"
-                    android:textSize="@dimen/choose_type_title"
-                    android:textStyle="bold"
-                    android:textColor="@android:color/black"/>
-
+                    android:layout_marginRight="16dp"
+                    android:src="@drawable/body" />
             </LinearLayout>
 
-            <TextView
-                android:id="@+id/recommendedRouteActivity_heightErrorTextView"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:visibility="gone"
-                android:text="Please type height."
-                android:textColor="@android:color/holo_red_dark"/>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
-                android:orientation="horizontal">
-                <TextView
-                    android:layout_width="64dp"
-                    android:layout_height="wrap_content"
-                    android:text="Weight:"
-                    android:textSize="@dimen/choose_type_title"
-                    android:textStyle="bold"
-                    android:textColor="@android:color/black"/>
-
-                <EditText
-                    android:id="@+id/recommendedRouteActivity_weightEditText"
-                    android:layout_width="80dp"
-                    android:layout_height="wrap_content"
-                    android:background="@android:color/holo_orange_light"
-                    android:gravity="center"
-                    android:inputType="numberDecimal"/>
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="8dp"
-                    android:layout_marginStart="8dp"
-                    android:text="kg"
-                    android:textSize="@dimen/choose_type_title"
-                    android:textStyle="bold"
-                    android:textColor="@android:color/black"/>
-            </LinearLayout>
-
-            <TextView
-                android:id="@+id/recommendedRouteActivity_weightErrorTextView"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:visibility="gone"
-                android:text="Please type weight."
-                android:textColor="@android:color/holo_red_dark"/>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
-                android:orientation="horizontal">
-                <TextView
-                    android:layout_width="64dp"
-                    android:layout_height="wrap_content"
-                    android:text="Area:"
-                    android:textSize="@dimen/choose_type_title"
-                    android:textStyle="bold"
-                    android:textColor="@android:color/black"/>
-
-                <Spinner
-                    android:id="@+id/recommendedRouteActivity_areaSpinner"
-                    android:layout_width="120dp"
-                    android:layout_height="wrap_content"
-                    android:textAlignment="center"
-                    android:entries="@array/area_spinner"/>
-
-            </LinearLayout>
-
-            <android.support.design.widget.FloatingActionButton
-                android:layout_width="32dp"
-                android:layout_height="32dp"
-                android:layout_margin="16dp"
-                android:src="@android:drawable/ic_menu_edit"
-                android:onClick="onChangeFloatingActionButtonClick"/>
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="0dp"
+                android:layout_gravity="center"
+                android:layout_weight="1"
+                android:onClick="onRecommendImageViewClick"
+                android:src="@drawable/recommend_route" />
         </LinearLayout>
+    </ScrollView>
 
-        <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginRight="16dp"
-            android:src="@drawable/body"/>
-    </LinearLayout>
-
-    <ImageView
-        android:layout_width="wrap_content"
-        android:layout_height="0dp"
-        android:layout_weight="1"
-        android:layout_gravity="center"
-        android:src="@drawable/recommend_route"
-        android:onClick="onRecommendImageViewClick"/>
-</LinearLayout>
+</RelativeLayout>

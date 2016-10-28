@@ -47,6 +47,7 @@
         <activity android:name=".AlarmSettingActivity">
         </activity>
         <receiver android:name="gogobike.egg.com.util.AlarmReceiver"/>
+        <service android:name=".GeofenceTransitionsIntentService"/>
     </application>
 
 </manifest>

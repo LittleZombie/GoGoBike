@@ -32,6 +32,7 @@
         android:layout_height="match_parent"
         android:background="#2a4151"
         android:padding="4dp">
+
         <fragment
             android:id="@+id/map"
             class="com.google.android.gms.maps.SupportMapFragment"
@@ -40,6 +41,19 @@
             android:layout_marginBottom="44dp"/>
 
         <ImageButton
+            android:id="@+id/mapActivity_racingEndImageButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentTop="true"
+            android:visibility="gone"
+            android:background="@android:color/transparent"
+            android:src="@drawable/racing_end"
+            android:onClick="onRacingEndImageButtonClick"/>
+
+        <ImageButton
+            android:id="@+id/mapActivity_blueBikeImageButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentBottom="true"
@@ -72,5 +86,48 @@
             android:layout_marginStart="8dp"
             android:textColor="@android:color/white"
             android:textSize="20sp"/>
+
+        <LinearLayout
+            android:id="@+id/mapActivity_typeMessageLinearLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:orientation="horizontal">
+
+            <EditText
+                android:id="@+id/mapActivity_messageEditText"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:layout_gravity="bottom"
+                android:layout_marginRight="8dp"
+                android:layout_marginEnd="8dp"
+                android:background="@android:color/white"
+                android:enabled="false"
+                android:visibility="gone"
+                android:inputType="text"
+                android:textSize="24sp"/>
+
+            <ImageButton
+                android:id="@+id/mapActivity_sendMessageImageButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="bottom"
+                android:enabled="false"
+                android:background="@android:color/transparent"
+                android:visibility="gone"
+                android:src="@drawable/send"
+                android:onClick="onSendMessageImageButtonClick"
+                android:text="SEND"/>
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/mapActivity_messageLinearLayout"
+            android:background="@android:color/background_light"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_above="@id/mapActivity_messageLinearLayout"
+            android:visibility="gone"
+            android:orientation="vertical"/>
     </RelativeLayout>
 </LinearLayout>

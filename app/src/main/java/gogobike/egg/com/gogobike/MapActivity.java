@@ -402,9 +402,17 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
 
         //add poke stop
         MarkerOptions pokeMarker = new MarkerOptions().icon(BitmapDescriptorFactory.fromResource(R.drawable.pokestop));
-        map.addMarker(pokeMarker.position(new LatLng(latitudeList.get(5), longitudeList.get(5))));
-        map.addMarker(pokeMarker.position(new LatLng(latitudeList.get(15), longitudeList.get(15))));
-        map.addMarker(pokeMarker.position(new LatLng(latitudeList.get(20), longitudeList.get(20))));
+
+        int size = latitudeList.size();
+        if(size >= 5) {
+            map.addMarker(pokeMarker.position(new LatLng(latitudeList.get(5), longitudeList.get(5))));
+        }
+        if(size >= 15) {
+            map.addMarker(pokeMarker.position(new LatLng(latitudeList.get(15), longitudeList.get(15))));
+        }
+        if(size >= 20) {
+            map.addMarker(pokeMarker.position(new LatLng(latitudeList.get(20), longitudeList.get(20))));
+        }
 
         LatLng centerPoint = new LatLng(latitudeList.get(routeSize / 2), longitudeList.get(routeSize / 2));
         map.moveCamera(CameraUpdateFactory.newLatLngZoom(centerPoint, 15));

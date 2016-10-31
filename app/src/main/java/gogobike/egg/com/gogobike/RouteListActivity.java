@@ -19,7 +19,12 @@ import java.util.List;
 
 import gogobike.egg.com.adapter.RouteListAdapter;
 import gogobike.egg.com.entity.BikeRoute;
+import gogobike.egg.com.route.BaliRoutes;
+import gogobike.egg.com.route.CijinRoutes;
+import gogobike.egg.com.route.HouliRoutes;
+import gogobike.egg.com.route.KaohsiungRoutes;
 import gogobike.egg.com.route.TamsuiRoutes;
+import gogobike.egg.com.route.TouBianRoutes;
 
 public class RouteListActivity extends AppCompatActivity implements AdapterView.OnItemClickListener {
 
@@ -81,17 +86,17 @@ public class RouteListActivity extends AppCompatActivity implements AdapterView.
 
     private void generateRouteList() {
         BikeRoute bikeRoute1 = new BikeRoute();
-        bikeRoute1.setRouteName("北投-貴子坑");
-        bikeRoute1.setOrigin("北投田心仔");
-        bikeRoute1.setDestination("貴子坑");
+        bikeRoute1.setRouteName("八里-媽媽嘴");
+        bikeRoute1.setOrigin("八里渡船頭");
+        bikeRoute1.setDestination("媽媽嘴咖啡");
         bikeRoute1.setPokemonStationNumber(15);
         bikeRoute1.setKilometer(6.4f);
         bikeRoute1.setTime(90);
         bikeRoute1.setRatingScore(2.5f);
-        bikeRoute1.setImageResourceId(R.drawable.tamsui_route_2);
+        bikeRoute1.setImageResourceId(R.drawable.bali);
         bikeRoute1.setHasBikeRentalStation(true);
-        bikeRoute1.setLatitudeList(TamsuiRoutes.generateLatitude());
-        bikeRoute1.setLongitudeList(TamsuiRoutes.generateLongitude());
+        bikeRoute1.setLatitudeList(BaliRoutes.generateLatitude());
+        bikeRoute1.setLongitudeList(BaliRoutes.generateLongitude());
         bikeRoute1.setWeight(7);
         bikeRoute1.setArea(RecommendedRouteActivity.Area.Taipei);
         bikeRoute1.setPokemonImageResourceId(new int[]{R.drawable.pokemon_4, R.drawable.pokemon_5});
@@ -104,7 +109,7 @@ public class RouteListActivity extends AppCompatActivity implements AdapterView.
         bikeRoute2.setKilometer(4.3f);
         bikeRoute2.setTime(60);
         bikeRoute2.setRatingScore(4);
-        bikeRoute2.setImageResourceId(R.drawable.tamsui_route_1);
+        bikeRoute2.setImageResourceId(R.drawable.tamsui);
         bikeRoute2.setHasBikeRentalStation(true);
         bikeRoute2.setLatitudeList(TamsuiRoutes.generateLatitude());
         bikeRoute2.setLongitudeList(TamsuiRoutes.generateLongitude());
@@ -113,65 +118,65 @@ public class RouteListActivity extends AppCompatActivity implements AdapterView.
         bikeRoute2.setPokemonImageResourceId(new int[]{R.drawable.pokemon_1, R.drawable.pokemon_2, R.drawable.pokemon_3});
 
         BikeRoute bikeRoute3 = new BikeRoute();
-        bikeRoute3.setRouteName("竹圍-關渡");
-        bikeRoute3.setOrigin("竹圍");
-        bikeRoute3.setDestination("關渡");
+        bikeRoute3.setRouteName("后里馬場-酒莊");
+        bikeRoute3.setOrigin("后里馬場");
+        bikeRoute3.setDestination("鐵道之鄉酒莊");
         bikeRoute3.setPokemonStationNumber(12);
         bikeRoute3.setKilometer(5.6f);
         bikeRoute3.setTime(40);
         bikeRoute3.setRatingScore(5);
-        bikeRoute3.setImageResourceId(R.drawable.tamsui_route_3);
-        bikeRoute3.setHasBikeRentalStation(true);
-        bikeRoute3.setLatitudeList(TamsuiRoutes.generateLatitude());
-        bikeRoute3.setLongitudeList(TamsuiRoutes.generateLongitude());
+        bikeRoute3.setImageResourceId(R.drawable.houli);
+        bikeRoute3.setHasBikeRentalStation(false);
+        bikeRoute3.setLatitudeList(HouliRoutes.generateLatitude());
+        bikeRoute3.setLongitudeList(HouliRoutes.generateLongitude());
         bikeRoute3.setWeight(5);
-        bikeRoute3.setArea(RecommendedRouteActivity.Area.Taipei);
+        bikeRoute3.setArea(RecommendedRouteActivity.Area.Taichung);
         bikeRoute3.setPokemonImageResourceId(new int[]{R.drawable.pokemon_1, R.drawable.pokemon_2, R.drawable.pokemon_3, R.drawable.pokemon_4, R.drawable.pokemon_5, R.drawable.pokemon_6});
 
         BikeRoute bikeRoute4 = new BikeRoute();
-        bikeRoute4.setRouteName("北投-貴子坑");
-        bikeRoute4.setOrigin("北投田心仔");
-        bikeRoute4.setDestination("貴子坑");
+        bikeRoute4.setRouteName("磨仔墩-蝙蝠洞");
+        bikeRoute4.setOrigin("磨仔墩故事島");
+        bikeRoute4.setDestination("頭汴蝙蝠洞風景區");
         bikeRoute4.setPokemonStationNumber(15);
         bikeRoute4.setKilometer(6.4f);
         bikeRoute4.setTime(90);
         bikeRoute4.setRatingScore(2.5f);
-        bikeRoute4.setImageResourceId(R.drawable.tamsui_route_2);
-        bikeRoute4.setHasBikeRentalStation(true);
-        bikeRoute4.setLatitudeList(TamsuiRoutes.generateLatitude());
-        bikeRoute4.setLongitudeList(TamsuiRoutes.generateLongitude());
+        bikeRoute4.setImageResourceId(R.drawable.toubain);
+        bikeRoute4.setHasBikeRentalStation(false);
+        bikeRoute4.setLatitudeList(TouBianRoutes.generateLatitude());
+        bikeRoute4.setLongitudeList(TouBianRoutes.generateLongitude());
         bikeRoute4.setWeight(7);
-        bikeRoute4.setArea(RecommendedRouteActivity.Area.Taipei);
+        bikeRoute4.setArea(RecommendedRouteActivity.Area.Taichung);
 
         BikeRoute bikeRoute5 = new BikeRoute();
-        bikeRoute5.setRouteName("淡水-紅樹林");
-        bikeRoute5.setOrigin("淡水");
-        bikeRoute5.setDestination("紅樹林");
+        bikeRoute5.setRouteName("旗津渡輪-舊高字塔");
+        bikeRoute5.setOrigin("旗津渡輪站");
+        bikeRoute5.setDestination("舊高字塔");
         bikeRoute5.setPokemonStationNumber(8);
         bikeRoute5.setKilometer(4.3f);
         bikeRoute5.setTime(60);
         bikeRoute5.setRatingScore(4);
-        bikeRoute5.setImageResourceId(R.drawable.tamsui_route_1);
+        bikeRoute5.setImageResourceId(R.drawable.cijin);
         bikeRoute5.setHasBikeRentalStation(true);
-        bikeRoute5.setLatitudeList(TamsuiRoutes.generateLatitude());
-        bikeRoute5.setLongitudeList(TamsuiRoutes.generateLongitude());
+        bikeRoute5.setLatitudeList(CijinRoutes.generateLatitude());
+        bikeRoute5.setLongitudeList(CijinRoutes.generateLongitude());
         bikeRoute5.setWeight(3);
-        bikeRoute5.setArea(RecommendedRouteActivity.Area.Taipei);
+        bikeRoute5.setArea(RecommendedRouteActivity.Area.Kaohsiung);
 
         BikeRoute bikeRoute6 = new BikeRoute();
-        bikeRoute6.setRouteName("竹圍-關渡");
-        bikeRoute6.setOrigin("竹圍");
-        bikeRoute6.setDestination("關渡");
+        bikeRoute6.setRouteName("愛河之心-光之塔");
+        bikeRoute6.setOrigin("愛河之心");
+        bikeRoute6.setDestination("光之塔");
         bikeRoute6.setPokemonStationNumber(12);
         bikeRoute6.setKilometer(5.6f);
         bikeRoute6.setTime(40);
         bikeRoute6.setRatingScore(5);
-        bikeRoute6.setImageResourceId(R.drawable.tamsui_route_3);
+        bikeRoute6.setImageResourceId(R.drawable.kaohsiung);
         bikeRoute6.setHasBikeRentalStation(true);
-        bikeRoute6.setLatitudeList(TamsuiRoutes.generateLatitude());
-        bikeRoute6.setLongitudeList(TamsuiRoutes.generateLongitude());
+        bikeRoute6.setLatitudeList(KaohsiungRoutes.generateLatitude());
+        bikeRoute6.setLongitudeList(KaohsiungRoutes.generateLongitude());
         bikeRoute6.setWeight(5);
-        bikeRoute6.setArea(RecommendedRouteActivity.Area.Taipei);
+        bikeRoute6.setArea(RecommendedRouteActivity.Area.Kaohsiung);
 
         bikeRouteList.add(bikeRoute1);
         bikeRouteList.add(bikeRoute2);

@@ -1,0 +1,42 @@
+{
+  "project_info": {
+    "project_number": "526886560498",
+    "firebase_url": "https://gogobikebackend.firebaseio.com",
+    "project_id": "gogobikebackend",
+    "storage_bucket": "gogobikebackend.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:526886560498:android:98a8428a103d2816",
+        "android_client_info": {
+          "package_name": "gogobike.egg.com.gogobike"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "526886560498-cu3jk3k2n0k69ekb0plqrcpkhvi9b0mr.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyA9IiT3OD4iGrMWTENBpg_OmByeUPHDVCw"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

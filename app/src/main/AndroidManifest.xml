@@ -1,13 +1,23 @@
 <?xml version="1.0" encoding="utf-8"?>
-<manifest package="gogobike.egg.com.gogobike"
-          xmlns:android="http://schemas.android.com/apk/res/android">
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="gogobike.egg.com.gogobike">
 
     <!--
          The ACCESS_COARSE/FINE_LOCATION permissions are not required to use
          Google Maps Android API v2, but you must specify either coarse or fine
          location permissions for the 'MyLocation' functionality.
     -->
-    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="com.google.android.c2dm.permission.RECEIVE" />
+    <uses-permission android:name="com.google.android.c2dm.permission.SEND" />
+
+    <permission
+        android:name="gogobike.egg.com.gogobike.gcm.permission.C2D_MESSAGE"
+        android:protectionLevel="signature" />
+
+    <uses-permission android:name="gogobike.egg.com.gogobike.gcm.permission.C2D_MESSAGE" />
+    <uses-permission android:name="android.permission.GET_ACCOUNTS" />
 
     <application
         android:allowBackup="true"
@@ -26,28 +36,48 @@
         -->
         <meta-data
             android:name="com.google.android.geo.API_KEY"
-            android:value="@string/google_maps_key"/>
+            android:value="@string/google_maps_key" />
+        <meta-data
+            android:name="com.google.android.gms.version"
+            android:value="@integer/google_play_services_version" />
 
         <activity
             android:name=".HomeActivity"
-            android:theme="@style/AppTheme.NoActionBar"
-            android:launchMode="singleTask">
+            android:launchMode="singleTask"
+            android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
-                <action android:name="android.intent.action.MAIN"/>
+                <action android:name="android.intent.action.MAIN" />
 
-                <category android:name="android.intent.category.LAUNCHER"/>
+                <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".RouteListActivity"/>
-        <activity android:name=".MapActivity"/>
-        <activity android:name=".RecommendedRouteActivity"
-                  android:theme="@style/AppTheme.NoActionBar"
-                  android:windowSoftInputMode="adjustResize">
-        </activity>
-        <activity android:name=".AlarmSettingActivity">
-        </activity>
-        <receiver android:name="gogobike.egg.com.util.AlarmReceiver"/>
-        <service android:name=".GeofenceTransitionsIntentService"/>
+        <activity android:name=".RouteListActivity" />
+        <activity android:name=".MapActivity" />
+        <activity
+            android:name=".RecommendedRouteActivity"
+            android:theme="@style/AppTheme.NoActionBar"
+            android:windowSoftInputMode="adjustResize"/>
+        <activity android:name=".AlarmSettingActivity"/>
+
+        <receiver android:name="gogobike.egg.com.util.AlarmReceiver" />
+
+        <service android:name=".GeofenceTransitionsIntentService" />
+        <service android:name=".MyGcmListenerService"
+            android:exported="true" >
+            <intent-filter>
+                <!--<action android:name="com.google.android.c2dm.intent.RECEIVE" />-->
+                <action android:name="com.google.firebase.MESSAGING_EVENT"/>
+            </intent-filter>
+        </service>
+        <service android:name=".RegistrationIntentService"
+            android:exported="false"/>
+        <service android:name=".MyInstanceIDListenerService"
+            android:exported="false">
+            <intent-filter>
+                <!--<action android:name="com.google.android.gms.iid.InstanceID" />-->
+                <action android:name="com.google.firebase.INSTANCE_ID_EVENT"/>
+            </intent-filter>
+        </service>
     </application>
 
 </manifest>

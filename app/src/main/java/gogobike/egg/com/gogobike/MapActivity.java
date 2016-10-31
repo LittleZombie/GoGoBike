@@ -9,7 +9,9 @@ import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.location.Location;
+import android.os.AsyncTask;
 import android.os.Bundle;
+import android.support.annotation.MainThread;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
@@ -17,6 +19,7 @@ import android.support.v4.content.ContextCompat;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
@@ -40,20 +43,24 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.maps.model.PolylineOptions;
+import com.google.api.client.extensions.android.http.AndroidHttp;
+import com.google.api.client.extensions.android.json.AndroidJsonFactory;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
+import gogobike.egg.com.backend.messaging.Messaging;
 import gogobike.egg.com.entity.BikeRoute;
 import gogobike.egg.com.util.GeofenceUtils;
 import gogobike.egg.com.util.PermissionUtils;
 
 
 public class MapActivity extends AppCompatActivity implements OnMapReadyCallback, DialogInterface.OnDismissListener,
-        GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener, LocationListener {
+        GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener, LocationListener, MyGcmListenerService.GcmMessageReceivedListener {
 
     public static final String SERIALIZABLE_BIKE_ROUTE_DATA = "SERIALIZABLE_BIKE_ROUTE_DATA";
     public static final String INTENT_MAP_MODE = "INTENT_MAP_MODE";
@@ -91,6 +98,7 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
         initGoogleApiClient();
         initGoogleMapApiKey();
         initMapFragment();
+        registrationGCM();
         layoutRoute();
     }
 
@@ -252,7 +260,7 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
                         SharedPreferences sharedPreferences = getSharedPreferences(RouteListActivity.ROUTE_RECORD_SHARED_PREFERENCE, MODE_PRIVATE);
                         sharedPreferences.edit().putString(USER_NAME, userName).apply();
                     }
-                });
+                }).show();
     }
 
     @Override
@@ -315,6 +323,13 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
         SupportMapFragment mapFragment =
                 (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
+    }
+
+    private void registrationGCM() {
+        Intent intent = new Intent(this, RegistrationIntentService.class);
+        startService(intent);
+
+        new MyGcmListenerService().setListener(this);
     }
 
     @Override
@@ -458,10 +473,23 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
             return;
         }
         viewHolder.messageEditText.setText("");
-        LocationServices.GeofencingApi.addGeofences(
-                googleApiClient,
-                GeofenceUtils.getGeofencingRequest(GeofenceUtils.getGeofence(userName + speakingMark + message, currentLatLng)),
-        GeofenceUtils.getGeofencePendingIntent(this));
+//        LocationServices.GeofencingApi.addGeofences(
+//                googleApiClient,
+//                GeofenceUtils.getGeofencingRequest(GeofenceUtils.getGeofence(userName + speakingMark + message, currentLatLng)),
+//        GeofenceUtils.getGeofencePendingIntent(this));
+        new AsyncTask<String, Void, Void>() {
+            @Override
+            protected Void doInBackground(String... params) {
+                Messaging.Builder builder = new Messaging.Builder(AndroidHttp.newCompatibleTransport(), new AndroidJsonFactory(), null);
+                Messaging messaging = builder.build();
+                try {
+                    messaging.messagingEndpoint().sendMessage(userName + ":" + params[0]).execute();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+                return null;
+            }
+        }.execute(message);
     }
 
     private void startAlarmSettingActivity() {
@@ -502,6 +530,27 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
         sharedPreferences.edit().putString(RouteListActivity.ROUTE_RECORD_LIST, new Gson().toJson(newBikeRouteList)).apply();
 
         startHomeActivity();
+    }
+
+    @Override
+    public void onGcmMessageReceived(String message) {
+//        if (userName.endsWith(message.substring(0, message.indexOf(":")))) {
+//            return;
+//        }
+        final TextView textView = new TextView(this);
+        textView.setText(message);
+        textView.setTextSize(24);
+//        if (viewHolder.messageLinearLayout.getChildCount() > 5) {
+//            viewHolder.messageLinearLayout.re
+//        }
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                viewHolder.messageLinearLayout.addView(textView);
+//                viewHolder.messageLinearLayout.scrollTo(0, viewHolder.messageLinearLayout.getHeight());
+            }
+        });
+        Log.d("Map", "Message: " + message);
     }
 
     private class ViewHolder {

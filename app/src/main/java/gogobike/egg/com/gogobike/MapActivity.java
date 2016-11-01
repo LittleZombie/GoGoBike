@@ -11,7 +11,6 @@ import android.content.pm.PackageManager;
 import android.location.Location;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.support.annotation.MainThread;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
@@ -28,6 +27,7 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.ToggleButton;
 
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
@@ -55,7 +55,6 @@ import java.util.List;
 
 import gogobike.egg.com.backend.messaging.Messaging;
 import gogobike.egg.com.entity.BikeRoute;
-import gogobike.egg.com.util.GeofenceUtils;
 import gogobike.egg.com.util.PermissionUtils;
 
 
@@ -142,6 +141,10 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
     }
 
     private void onAlarmSettingActivityResult(Intent data) {
+        saveRoute(data.getLongExtra(AlarmSettingActivity.INTENT_LONG_CALENDAR_MILLIS, 0));
+    }
+
+    private void saveRoute(long alarmTime) {
         SharedPreferences sharedPreferences = getSharedPreferences(RouteListActivity.ROUTE_RECORD_SHARED_PREFERENCE, MODE_PRIVATE);
         String bikeRouteJsonString = sharedPreferences.getString(RouteListActivity.ROUTE_RECORD_LIST, null);
         List<BikeRoute> bikeRoutes;
@@ -152,7 +155,7 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
             }.getType());
 
         }
-        bikeRoute.setAlarmTime(data.getLongExtra(AlarmSettingActivity.INTENT_LONG_CALENDAR_MILLIS, 0));
+        bikeRoute.setAlarmTime(alarmTime);
         bikeRoutes.add(bikeRoute);
         sharedPreferences.edit().putString(RouteListActivity.ROUTE_RECORD_LIST, new Gson().toJson(bikeRoutes)).apply();
         startHomeActivity();
@@ -232,16 +235,6 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
         });
         viewHolder.messageEditText.setEnabled(true);
         viewHolder.sendMessageButton.setEnabled(true);
-        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager
-                .PERMISSION_GRANTED) {
-            PermissionUtils.requestPermission(this, LOCATION_PERMISSION_REQUEST_CODE,
-                    Manifest.permission.ACCESS_FINE_LOCATION, false);
-            return;
-        }
-        LocationRequest request = new LocationRequest();
-        request.setInterval(5000);
-        LocationServices.FusedLocationApi.requestLocationUpdates(googleApiClient,
-                request,  this);
     }
 
     private void showTypeUserNameDialog(Context context) {
@@ -436,7 +429,12 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
     public void onBlueBikeImageButtonClick(View view) {
         if (mode < 2) {
             new AlertDialog.Builder(this).setMessage(R.string.alarm_dialog_message)
-                    .setNegativeButton("No", null)
+                    .setNegativeButton("No", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            saveRoute(System.currentTimeMillis());
+                        }
+                    })
                     .setPositiveButton("Setting", new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
@@ -451,10 +449,24 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
             viewHolder.racingEndImageButton.setVisibility(View.VISIBLE);
             viewHolder.messageEditText.setVisibility(View.VISIBLE);
             viewHolder.sendMessageButton.setVisibility(View.VISIBLE);
+            findViewById(R.id.mapActivity_updateLocationToggleButton).setVisibility(View.VISIBLE);
             if (getSupportActionBar() != null) {
                 getSupportActionBar().hide();
             }
         }
+    }
+
+    private void updateCurrentLocation() {
+        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager
+                .PERMISSION_GRANTED) {
+            PermissionUtils.requestPermission(this, LOCATION_PERMISSION_REQUEST_CODE,
+                    Manifest.permission.ACCESS_FINE_LOCATION, false);
+            return;
+        }
+        LocationRequest updateLocationRequest = new LocationRequest();
+        updateLocationRequest.setInterval(5000);
+        LocationServices.FusedLocationApi.requestLocationUpdates(googleApiClient,
+                updateLocationRequest,  this);
     }
 
     public void onRacingEndImageButtonClick(View view) {
@@ -498,6 +510,14 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
                 return null;
             }
         }.execute(message);
+    }
+
+    public void onUpdateLocationToggleButtonClick(View view) {
+        if (((ToggleButton) view).isChecked()) {
+            updateCurrentLocation();
+        } else {
+            LocationServices.FusedLocationApi.removeLocationUpdates(googleApiClient, this);
+        }
     }
 
     private void startAlarmSettingActivity() {

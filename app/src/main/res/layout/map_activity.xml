@@ -33,6 +33,22 @@
         android:background="#2a4151"
         android:padding="4dp">
 
+        <ToggleButton
+            android:id="@+id/mapActivity_updateLocationToggleButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentEnd="true"
+            android:layout_marginTop="8dp"
+            android:layout_marginRight="52dp"
+            android:layout_marginEnd="52dp"
+            android:checked="false"
+            android:visibility="gone"
+            android:textOff="自動定位"
+            android:textOn="關閉定位"
+            android:onClick="onUpdateLocationToggleButtonClick"/>
+
         <fragment
             android:id="@+id/map"
             class="com.google.android.gms.maps.SupportMapFragment"
@@ -59,8 +75,6 @@
             android:layout_alignParentBottom="true"
             android:layout_alignParentRight="true"
             android:layout_alignParentEnd="true"
-            android:layout_marginRight="16dp"
-            android:layout_marginEnd="16dp"
             android:background="@android:color/transparent"
             android:src="@drawable/bike_blue"
             android:onClick="onBlueBikeImageButtonClick"/>

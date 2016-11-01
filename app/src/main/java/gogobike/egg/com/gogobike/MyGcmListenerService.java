@@ -36,7 +36,10 @@ public class MyGcmListenerService extends FirebaseMessagingService {
 //        for (Map.Entry<String, String> entry: map.entrySet()) {
 //        Log.d(TAG, "Message: " + message);
 //        }
-        listener.onGcmMessageReceived(message);
+
+        if(listener != null) {
+            listener.onGcmMessageReceived(message);
+        }
 
     }
 //    @Override

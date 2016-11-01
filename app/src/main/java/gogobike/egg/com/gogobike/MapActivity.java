@@ -272,7 +272,10 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
             currentMarker.remove();
         }
         currentLatLng = new LatLng(location.getLatitude(), location.getLongitude());
-        currentMarker = map.addMarker(new MarkerOptions().position(currentLatLng).icon(BitmapDescriptorFactory.fromResource(R.drawable.user_bicycle)));
+        currentMarker = map.addMarker(new MarkerOptions()
+                .flat(true)
+                .position(currentLatLng)
+                .icon(BitmapDescriptorFactory.fromResource(R.drawable.user_bicycle)));
         map.moveCamera(CameraUpdateFactory.newLatLngZoom(currentLatLng, 17));
     }
 
@@ -362,7 +365,6 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
     private void enableMyLocation() {
         //noinspection MissingPermission
         map.setMyLocationEnabled(true);
-
     }
 
     public void updateMap(BikeRoute bikeRoute) {

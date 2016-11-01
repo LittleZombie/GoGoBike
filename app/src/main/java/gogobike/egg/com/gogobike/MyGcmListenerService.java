@@ -1,8 +1,5 @@
 package gogobike.egg.com.gogobike;
 
-import android.os.Bundle;
-import android.util.Log;
-
 import com.google.firebase.messaging.FirebaseMessagingService;
 import com.google.firebase.messaging.RemoteMessage;
 
@@ -15,6 +12,8 @@ import java.util.Map;
 public class MyGcmListenerService extends FirebaseMessagingService {
     private static final String TAG = "MyGcmListenerService";
     private static GcmMessageReceivedListener listener;
+    private static boolean isRepeat = false;
+    private static String lastMessage = "";
 
     public void setListener(GcmMessageReceivedListener listener) {
         MyGcmListenerService.listener = listener;
@@ -26,6 +25,14 @@ public class MyGcmListenerService extends FirebaseMessagingService {
 
         Map<String, String> map = remoteMessage.getData();
         String message = map.get("message");
+        synchronized (lastMessage) {
+            if (isRepeat && lastMessage.equals(message)) {
+                isRepeat = false;
+                return;
+            }
+            lastMessage= message;
+            isRepeat = true;
+        }
 //        for (Map.Entry<String, String> entry: map.entrySet()) {
 //        Log.d(TAG, "Message: " + message);
 //        }

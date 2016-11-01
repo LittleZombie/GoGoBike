@@ -56,7 +56,7 @@
         <activity
             android:name=".RecommendedRouteActivity"
             android:theme="@style/AppTheme.NoActionBar"
-            android:windowSoftInputMode="adjustResize"/>
+            android:windowSoftInputMode="adjustResize|stateHidden"/>
         <activity android:name=".AlarmSettingActivity"/>
 
         <receiver android:name="gogobike.egg.com.util.AlarmReceiver" />

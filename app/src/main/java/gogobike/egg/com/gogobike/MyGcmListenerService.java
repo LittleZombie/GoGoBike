@@ -33,10 +33,17 @@ public class MyGcmListenerService extends FirebaseMessagingService {
             lastMessage= message;
             isRepeat = true;
         }
+        if (listener == null) {
+            return;
+        }
 //        for (Map.Entry<String, String> entry: map.entrySet()) {
 //        Log.d(TAG, "Message: " + message);
 //        }
-        listener.onGcmMessageReceived(message);
+        if (message.contains("@")) {
+            listener.onGcmLocationReceived(message);
+        } else {
+            listener.onGcmMessageReceived(message);
+        }
 
     }
 //    @Override
@@ -49,5 +56,7 @@ public class MyGcmListenerService extends FirebaseMessagingService {
 
     public interface GcmMessageReceivedListener {
         void onGcmMessageReceived(String message);
+
+        void onGcmLocationReceived(String message);
     }
 }

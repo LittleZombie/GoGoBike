@@ -50,8 +50,10 @@ import com.google.gson.reflect.TypeToken;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 
 import gogobike.egg.com.backend.messaging.Messaging;
 import gogobike.egg.com.entity.BikeRoute;
@@ -81,6 +83,7 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
 
     public static String userName;
     private int mode;
+    private List<Map<String, Marker>> otherUserMarker = new LinkedList<>();
     private boolean mShowPermissionDeniedDialog = false;
 
     @Override
@@ -93,11 +96,11 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
         viewHolder = new ViewHolder();
         initActionbar();
         initUserName();
+        registrationGCM();
         initBroadcastReceiver();
         initGoogleApiClient();
         initGoogleMapApiKey();
         initMapFragment();
-        registrationGCM();
         layoutRoute();
     }
 
@@ -273,10 +276,14 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
         }
         currentLatLng = new LatLng(location.getLatitude(), location.getLongitude());
         currentMarker = map.addMarker(new MarkerOptions()
-                .flat(true)
                 .position(currentLatLng)
                 .icon(BitmapDescriptorFactory.fromResource(R.drawable.user_bicycle)));
         map.moveCamera(CameraUpdateFactory.newLatLngZoom(currentLatLng, 17));
+
+        if (userName.isEmpty()) {
+            return;
+        }
+        startSendMessageAsyncTask(userName + "@" + location.getLatitude() + "," + location.getLongitude());
     }
 
     private void initGoogleMapApiKey() {
@@ -451,6 +458,7 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
             viewHolder.racingEndImageButton.setVisibility(View.VISIBLE);
             viewHolder.messageEditText.setVisibility(View.VISIBLE);
             viewHolder.sendMessageButton.setVisibility(View.VISIBLE);
+            findViewById(R.id.mapActivity_typeMessageLinearLayout).setVisibility(View.VISIBLE);
             findViewById(R.id.mapActivity_updateLocationToggleButton).setVisibility(View.VISIBLE);
             if (getSupportActionBar() != null) {
                 getSupportActionBar().hide();
@@ -495,17 +503,22 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
             return;
         }
         viewHolder.messageEditText.setText("");
+        viewHolder.messageEditText.setVisibility(View.VISIBLE);
 //        LocationServices.GeofencingApi.addGeofences(
 //                googleApiClient,
 //                GeofenceUtils.getGeofencingRequest(GeofenceUtils.getGeofence(userName + speakingMark + message, currentLatLng)),
 //        GeofenceUtils.getGeofencePendingIntent(this));
+        startSendMessageAsyncTask(userName + ":" + message);
+    }
+
+    private void startSendMessageAsyncTask(String message) {
         new AsyncTask<String, Void, Void>() {
             @Override
             protected Void doInBackground(String... params) {
                 Messaging.Builder builder = new Messaging.Builder(AndroidHttp.newCompatibleTransport(), new AndroidJsonFactory(), null);
                 Messaging messaging = builder.build();
                 try {
-                    messaging.messagingEndpoint().sendMessage(userName + ":" + params[0]).execute();
+                    messaging.messagingEndpoint().sendMessage(params[0]).execute();
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
@@ -519,6 +532,14 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
             updateCurrentLocation();
         } else {
             LocationServices.FusedLocationApi.removeLocationUpdates(googleApiClient, this);
+        }
+    }
+
+    public void onNoteBookImageButtonClick(View view) {
+        if (viewHolder.messageLinearLayout.getVisibility() == View.GONE) {
+            viewHolder.messageLinearLayout.setVisibility(View.VISIBLE);
+        } else {
+            viewHolder.messageLinearLayout.setVisibility(View.GONE);
         }
     }
 
@@ -581,6 +602,46 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
             }
         });
         Log.d("Map", "Message: " + message);
+    }
+
+    @Override
+    public void onGcmLocationReceived(String message) {
+        final String name = message.substring(0, message.indexOf("@"));
+        if (userName.equals(name)) {
+            return;
+        }
+
+        final LatLng latLng = new LatLng(Double.valueOf(message.substring(message.indexOf("@") + 1, message.indexOf(",")))
+                , Double.valueOf(message.substring(message.indexOf(",") + 1)));
+        for (final Map<String, Marker> user : otherUserMarker){
+            if (user.containsKey(name)) {
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        Marker marker = user.get(name);
+                        marker.remove();
+                        marker = map.addMarker(new MarkerOptions()
+                                .position(latLng)
+                                .title(name)
+                                .icon(BitmapDescriptorFactory.fromResource(R.drawable.red_bicycle_rider)));
+                        user.put(name, marker);
+                    }
+                });
+                return;
+            }
+        }
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                Marker marker = map.addMarker(new MarkerOptions()
+                        .position(latLng)
+                        .title(name)
+                        .icon(BitmapDescriptorFactory.fromResource(R.drawable.red_bicycle_rider)));
+                Map<String, Marker> user = new HashMap<>();
+                user.put(name, marker);
+                otherUserMarker.add(user);
+            }
+        });
     }
 
     private class ViewHolder {
